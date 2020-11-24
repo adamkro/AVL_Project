@@ -85,40 +85,49 @@ public class AVLTree {
 		}
 		return 0;
    }
+private int balance(IAVLNode node) {
 
-   private int balance(IAVLNode node){
-   	if (node.getParent() == null && this.size() <= 2) {
-   		node.setHeight(node.getHeight() + 1);
-   		return 1;
+	int count = 0;
+	boolean finish_balance = false;
+	while (!finish_balance) {
+		int diff = rankDifference(node);
+		switch (diff) {
+			case 2:
+				if (rankDifference(node.getLeft()) == 1) { // one rotate right
+					rotateRight(node.getLeft(), node);
+					count += 2;
+				} else {
+					IAVLNode left = node.getLeft();
+					rotateLeft(left.getRight(), left);
+					rotateRight(node.getLeft(), node);
+					count += 5;
+				}
+				finish_balance = true;
+				break;
+			case (-2):
+				if (rankDifference(node.getRight()) == -1) { // one rotate left
+					rotateLeft(node.getRight(), node);
+					count += 2;
+				} else {
+					IAVLNode right = node.getRight();
+					rotateRight(right.getLeft(), right);
+					rotateLeft(node.getRight(), node);
+					count += 5;
+				}
+				finish_balance = true;
+				break;
+			default: //-1 or 1
+				node.updateHeight();
+				count ++;
+				if (node.getParent() == null) {
+					finish_balance = true;
+					break;
+				}
+				node = node.getParent();
+		}
 	}
-   	int diff = rankDifference(node);
-    switch (diff) {
-		case 2:
-			if (rankDifference(node.getLeft()) == 1) { // one rotate right
-				rotateRight(node.getLeft(), node);
-				return 2;
-			}  else {
-				IAVLNode left = node.getLeft();
-				rotateLeft(left.getRight(), left);
-				rotateRight(node.getLeft(), node);
-				return 5;
-			}
-		case -2:
-			if (rankDifference(node.getRight()) == 1) { // one rotate left
-				rotateLeft(node.getRight(), node);
-				return 2;
-			}
-			else {
-				IAVLNode right = node.getRight();
-				rotateRight(right.getLeft(), right);
-				rotateLeft(node.getRight(), node);
-				return 5;
-			}
-		default: //-1 or 1
-			node.updateHeight();
-			return 1 + balance(node.getParent());
-	}
-   }
+	return count;
+}
 
 	private static int rankDifference(IAVLNode node){
 		int leftHeight= node.getLeft().getHeight();
@@ -329,6 +338,7 @@ public class AVLTree {
 	private void setRoot(IAVLNode newRoot)
 	{
 		this.root = newRoot;
+		newRoot.setParent(null);
 	}
 
      /**

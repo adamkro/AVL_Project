@@ -35,7 +35,7 @@ public class PrintBST
                     next.add(null);
                     next.add(null);
                 } else {
-                    String aa = n.getValue();
+                    String aa = Integer.toString(n.getKey());
                     line.add(aa);
                     if (aa.length() > widest) widest = aa.length();
 
