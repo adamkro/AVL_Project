@@ -81,53 +81,55 @@ public class AVLTree {
 			parent.setRight(node);
 		}
 		if (parent.getHeight() == 0) { // CASE: NOT UNARY
-			this.balance(parent);
+			this.balance(parent,true);
 		}
 		return 0;
    }
-private int balance(IAVLNode node) {
-
-	int count = 0;
-	boolean finish_balance = false;
-	while (!finish_balance) {
-		int diff = rankDifference(node);
-		switch (diff) {
-			case 2:
-				if (rankDifference(node.getLeft()) == 1) { // one rotate right
-					rotateRight(node.getLeft(), node);
-					count += 2;
-				} else {
-					IAVLNode left = node.getLeft();
-					rotateLeft(left.getRight(), left);
-					rotateRight(node.getLeft(), node);
-					count += 5;
-				}
-				finish_balance = true;
-				break;
-			case (-2):
-				if (rankDifference(node.getRight()) == -1) { // one rotate left
-					rotateLeft(node.getRight(), node);
-					count += 2;
-				} else {
-					IAVLNode right = node.getRight();
-					rotateRight(right.getLeft(), right);
-					rotateLeft(node.getRight(), node);
-					count += 5;
-				}
-				finish_balance = true;
-				break;
-			default: //-1 or 1
-				node.updateHeight();
-				count ++;
-				if (node.getParent() == null) {
-					finish_balance = true;
-					break;
-				}
-				node = node.getParent();
-		}
-	}
-	return count;
-}
+//private int balance(IAVLNode node) {
+//
+//	int count = 0;
+//	boolean finish_balance = false;
+//	while (!finish_balance) {
+//		int diff = rankDifference(node);
+//		switch (diff) {
+//			case 2:
+//				if (rankDifference(node.getLeft()) == 1) { // one rotate right
+//					rotateRight(node.getLeft(), node);
+//					count += 2;
+//				} else {
+//					IAVLNode left = node.getLeft();
+//					rotateLeft(left.getRight(), left);
+//					rotateRight(node.getLeft(), node);
+//					count += 5;
+//				}
+//				finish_balance = true;
+//				break;
+//			case (-2):
+//				if (rankDifference(node.getRight()) == -1) { // one rotate left
+//					rotateLeft(node.getRight(), node);
+//					count += 2;
+//				} else {
+//					IAVLNode right = node.getRight();
+//					rotateRight(right.getLeft(), right);
+//					rotateLeft(node.getRight(), node);
+//					count += 5;
+//				}
+//				finish_balance = true;
+//				break;
+//			default: //-1 or 1
+//				int preHeight = node.getHeight();
+//				node.updateHeight();
+//				int postHeight = node.getHeight();
+//				if (node.getParent() == null || preHeight == postHeight) {
+//					finish_balance = true;
+//					break;
+//				}
+//				count ++;
+//				node = node.getParent();
+//		}
+//	}
+//	return count;
+//}
 
 	private static int rankDifference(IAVLNode node){
 		int leftHeight= node.getLeft().getHeight();
@@ -187,72 +189,138 @@ private int balance(IAVLNode node) {
    * demotion/rotation - counted as one rebalnce operation, double-rotation is counted as 2.
    * returns -1 if an item with key k was not found in the tree.
    */
-//   //public int delete(int k)
-//   {
-//   		if(search(k) == null)
-//   			return -1;
-//	   this.size -= 1;
-//
-//	   IAVLNode node = searchNode(k);
-//	   if (node.getLeft().isRealNode() && !node.getRight().isRealNode()){
-//	   		if(!node.getIsRightChild())
-//	   			node.getParent().setLeft(node.getLeft());
-//	   		else
-//				node.getParent().setRight(node.getLeft());
-//	   }
-//	   if (node.getRight().isRealNode() && !node.getLeft().isRealNode()){
-//		   if(!node.getIsRightChild())
-//			   node.getParent().setLeft(node.getRight());
-//		   else
-//			   node.getParent().setRight(node.getRight());
-//	   }
-//	   //לפנק בבאלנס
-//	   if(!node.getLeft().isRealNode() && !node.getRight().isRealNode()){
-//		   if(node.getIsRightChild())
-//			   node.getParent().setRight(new AVLNode());
-//		   else
-//			   node.getParent().setLeft(new AVLNode());
-//	   }
-//	   else{
-//	   	IAVLNode successor = findSuccessor(node);
-//	   	//מתודת מחיקה
-//		if(node.getIsRightChild())
-//			node.getParent().setRight(successor);
-//		else
-//			node.getParent().setLeft(successor);
-//
-//
-//
-//	   }
-//	   node.setParent(null);
-//
-//
-//	   IAVLNode node = new AVLNode(k, i);
-//	   if (k < parent.getKey()) { // insert left
-//		   parent.setLeft(node);
-//	   } else {
-//		   parent.setRight(node);
-//	   }
-//	   if (parent.getHeight() == 0) { // CASE: NOT UNARY
-//		   this.balance(parent);
-//	   }
-//	   return 0;
-//   }
-//
-//	public IAVLNode findSuccessor (IAVLNode node){
-//   		if(node.getRight().isRealNode()){
-//			node = node.getRight();
-//   			while (node.getLeft().isRealNode())
-//				node = node.getLeft();
-//			return node;
-//		}
-//   		else{
-//			int k = node.getKey();
-//			while (node.getParent().isRealNode() && node.getParent().getKey() < k)
-//   				node = node.getParent();
-//   			return node;
-//		}
-//	}
+   public int delete(int k) {
+	   if (search(k) == null)
+		   return -1;
+
+	   IAVLNode node = searchNode(k);
+	   IAVLNode nodeToBalance;
+	   if (node.getHeight() == 0)  // node is leaf
+		   nodeToBalance = simpleDelete(node);
+	   else if ((!node.getRight().isRealNode()) || (!node.getLeft().isRealNode())) // unary node
+		   nodeToBalance = simpleDelete(node);
+	   else //inner node
+		   nodeToBalance= replaceNode(node); //replace node with his successor
+	   return (this.balance (nodeToBalance,false));
+   }
+
+	public IAVLNode replaceNode (IAVLNode node) {
+		IAVLNode successor = findSuccessor(node);
+		IAVLNode nodeToBalance = simpleDelete(successor);
+		successor.setRight(node.getRight());
+		successor.setLeft(node.getLeft());
+		successor.setParent(node.getParent());
+		if (node.getParent() == null)
+			this.setRoot(successor);
+		else{
+			if (node.getIsRightChild())
+				node.getParent().setRight(successor);
+			else
+				node.getParent().setLeft(successor);
+		}
+		node.setParent(null);
+		node.setLeft(null);
+		node.setRight(null);
+		if (nodeToBalance == node) //case that that successor is child of node
+			nodeToBalance = successor;
+		return nodeToBalance;
+	}
+
+
+	public IAVLNode simpleDelete (IAVLNode node){
+   		IAVLNode parent = node.getParent();
+   		if (parent == null){
+   			if (node.getHeight() == 0)
+				this.setRoot(null);
+   			else if (node.getRight().isRealNode()){
+				this.setRoot(node.getRight());
+				node.getRight().setParent(null);
+			}
+   			else{
+				this.setRoot(node.getLeft());
+				node.getLeft().setParent(null);
+			}
+   		}
+   		else {
+			IAVLNode newChild;
+			if (node.getRight().isRealNode())
+				newChild = node.getRight();
+			else
+				newChild = node.getLeft();
+			if (node.getIsRightChild())
+				parent.setRight(newChild);
+			else
+				parent.setLeft(newChild);
+		}
+		node.setParent(null);
+		node.setRight(null);
+		node.setLeft(null);
+		this.size -= 1;
+		return parent;
+	}
+
+
+	public IAVLNode findSuccessor (IAVLNode node){
+   		if(node.getRight().isRealNode()){
+			node = node.getRight();
+   			while (node.getLeft().isRealNode())
+				node = node.getLeft();
+			return node;
+		}
+   		else{
+			int k = node.getKey();
+
+   				node = node.getParent();
+   			return node;
+		}
+	}
+
+	private int balance (IAVLNode node, boolean isInsert) {
+		int count = 0;
+		while (node != null) {
+			int diff = rankDifference(node);
+			switch (diff) {
+				case 2:
+					if (rankDifference(node.getLeft()) == -1) {
+						IAVLNode left = node.getLeft();
+						rotateLeft(left.getRight(), left);
+						rotateRight(node.getLeft(), node);
+						count += 5;
+					} else {
+						rotateRight(node.getLeft(), node);
+						count += 2;
+					}
+					if (isInsert)
+						node = null;
+					break;
+				case (-2):
+					if (rankDifference(node.getRight()) == 1) {
+						IAVLNode right = node.getRight();
+						rotateRight(right.getLeft(), right);
+						rotateLeft(node.getRight(), node);
+						count += 5;
+					} else {
+						rotateLeft(node.getRight(), node);
+						count += 2;
+					}
+					if (isInsert)
+						node = null;
+					break;
+				default: //-1 or 1
+					int preHeight = node.getHeight();
+					node.updateHeight();
+					int postHeight = node.getHeight();
+					if (preHeight == postHeight) {
+						node = null;
+						break;
+					}
+					count ++;
+			}
+			if (node != null)
+				node = node.getParent();
+		}
+		return count;
+	}
 
    /**
     * public String min()
@@ -441,8 +509,10 @@ private int balance(IAVLNode node) {
 		public void setLeft(IAVLNode node)
 		{
 			this.left = node;
-			node.setParent(this);
-			node.setRightChild(false);
+			if (node != null) {
+				node.setParent(this);
+				node.setRightChild(false);
+			}
 		}
 		public IAVLNode getLeft(){
 			return this.left;
@@ -451,8 +521,10 @@ private int balance(IAVLNode node) {
 		public void setRight(IAVLNode node)
 		{
 			this.right = node;
-			node.setParent(this);
-			node.setRightChild(true);
+			if (node != null) {
+				node.setParent(this);
+				node.setRightChild(true);
+			}
 		}
 
 	   public void setRightChild (boolean b) {
