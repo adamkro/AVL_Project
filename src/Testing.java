@@ -49,7 +49,8 @@ public class Testing {
             AVLTree[] split = t1.split(keyRemoved);
             testTree(split[0]);
             testTree(split[1]);
-            t1 = split[0].join(new AVLNode(keyRemoved,""),split[1]);
+            split[0].join(new AVLNode(keyRemoved,""),split[1]);
+            t1 = split[0];
             testTree(t1);
         }
     }
