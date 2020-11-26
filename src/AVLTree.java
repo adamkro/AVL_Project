@@ -216,10 +216,7 @@ public class AVLTree {
 			else
 				parent.setLeft(newChild);
 		}
-		node.setParent(null);
-		node.setRight(null);
-		node.setLeft(null);
-		//this.size -= 1;
+   		node.nullify();
 		return parent;
 	}
 
@@ -362,15 +359,14 @@ public class AVLTree {
    * sorted by their respective keys,
    * or an empty array if the tree is empty.
    */
-  public String[] infoToArray()
-  {
-	  String[] arr = new String[this.size()];
-	  ArrayList<String> aList = new ArrayList<String>(this.size());
-	  inOrderValues(aList, this.getRoot());
-	  arr = aList.stream().mapToString(i->i).toArray();
-	  return arr;
-
-  }
+//  public String[] infoToArray()
+//  {
+//	  String[] arr = new String[this.size()];
+//	  ArrayList<String> aList = new ArrayList<String>(this.size());
+//	  inOrderValues(aList, this.getRoot());
+//	  arr = aList.stream().mapToString(i->i).toArray();
+//	  return arr;
+//  }
 
    /**
     * public int size()
@@ -410,28 +406,49 @@ public class AVLTree {
     * Returns an array [t1, t2] with two AVL trees. keys(t1) < x < keys(t2).
 	  * precondition: search(x) != null (i.e. you can also assume that the tree is not empty)
     * postcondition: none
-    */   
-//   public AVLTree[] split(int x)
-//   {
-//	   IAVLNode node = searchNode(x);
-//	   AVLTree smaller = new AVLTree();
-//	   smaller.setRoot(node.getLeft());
-//	   AVLTree bigger = new AVLTree();
-//	   bigger.setRoot(node.getRight());
-//	   AVLTree[] res = new AVLTree[2];
-//	   AVLTree tmp = new AVLTree();
-//
-//
-//	   return null;
-//   }
-   /**
-    * public join(IAVLNode x, AVLTree t)
-    *
-    * joins t and x with the tree. 	
-    * Returns the complexity of the operation (|tree.rank - t.rank| + 1).
-	  * precondition: keys(x,t) < keys() or keys(x,t) > keys(). t/tree might be empty (rank = -1).
-    * postcondition: none
-    */   
+    */
+
+  	public AVLTree[] split(int x){
+  		IAVLNode node_x = searchNode(x);
+	   	AVLTree smaller = constructSubTree(node_x.getLeft());
+	   	AVLTree bigger = constructSubTree(node_x.getRight());
+	   	AVLTree[] res = new AVLTree[2];
+	   	res[0] = smaller;
+	   	res[1] = bigger;
+	   	IAVLNode node = node_x.getParent();
+	   	node_x.nullify();
+	   	IAVLNode tmp;
+	   	while(node != null){
+			tmp = node.getParent();
+			if(node.getKey() < x){
+				smaller.join(node, constructSubTree(node.getLeft())); //Make sure join takes care of node's children and parent
+			} else {
+				bigger.join(node, constructSubTree(node.getRight()));
+			}
+			node = tmp;
+		}
+	   	return res;
+    }
+
+	   public static AVLTree constructSubTree(IAVLNode node){
+		   AVLTree tree = new AVLTree();
+		   if (node.isRealNode()){
+		   		tree.setRoot(node);
+			   	node.setParent(null);
+		   }
+		   return tree;
+	   }
+
+
+
+	/**
+     * public join(IAVLNode x, AVLTree t)
+     *
+     * joins t and x with the tree.
+     * Returns the complexity of the operation (|tree.rank - t.rank| + 1).
+       * precondition: keys(x,t) < keys() or keys(x,t) > keys(). t/tree might be empty (rank = -1).
+     * postcondition: none
+     */
 //   public int join(IAVLNode x, AVLTree t)
 //   {
 //	   if(t.empty() || this.empty())
@@ -482,6 +499,8 @@ public class AVLTree {
 		boolean getIsRightChild();
 		int getSize();
 		void updateSize();
+
+		void nullify();
 	}
 
    /**
@@ -606,6 +625,11 @@ public class AVLTree {
 	   this.setSize(1 + left.getSize() + right.getSize());
    }
 
+	   public void nullify(){
+		   this.setParent(null);
+		   this.setRight(null);
+		   this.setLeft(null);
+	   }
 
    }
 

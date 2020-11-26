@@ -37,6 +37,24 @@ public class Testing {
                 isBST(node.getLeft()));
     }
 
+    public static void testJoinSplit(int numOfJoins){
+        AVLTree t1 = genRandTree(rd.nextInt(50), 0, 100);
+        AVLTree t2 = genRandTree(rd.nextInt(50), 101, 200);
+        t1.join(new AVLNode(101, ""), t2);
+        int total_size = t1.size();
+        testTree(t1);
+        int[] inorder = t1.keysToArray();
+        for (int i = 0; i < Math.min(numOfJoins, total_size); i++) {
+            int keyRemoved = inorder[rd.nextInt(inorder.length)];
+            AVLTree[] split = t1.split(keyRemoved);
+            testTree(split[0]);
+            testTree(split[1]);
+            t1 = split[0].join(new AVLNode(keyRemoved,""),split[1]);
+            testTree(t1);
+        }
+    }
+
+
     public static void testTree(AVLTree t){
         //System.out.println("Testing tree...");
         IAVLNode root = t.getRoot();
@@ -86,6 +104,21 @@ public class Testing {
         }
         return t;
     }
+    public static AVLTree genRandTree(int size, int min,int max){ //genRandTree with range
+        int num;
+        Set<Integer> hs= new HashSet<Integer>();
+        AVLTree t = new AVLTree();
+        while(size > 0) {
+            num = rd.nextInt(max-min)+min;
+            if (hs.contains(num))
+                continue;
+            hs.add(num);
+            t.insert(num, "");
+            size--;
+        }
+        return t;
+    }
+
 
     public static void popRandomNodes(AVLTree tree, int count){
         int[] inorder = tree.keysToArray();
