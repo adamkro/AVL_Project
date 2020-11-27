@@ -449,7 +449,17 @@ public class AVLTree {
 			return 1;
 		}
 		if (t.empty() || this.empty()) { //one of the trees are empty
-			joinEmpty(t, x);
+			if (t.empty()){
+				joinEmpty(this,x);
+				t.setRoot(this.getRoot());
+			}
+			else{
+				joinEmpty(t,x);
+				this.setRoot(t.getRoot());
+			}
+			x.updateSize();
+			x.updateHeight();
+			this.balance(x.getParent(), true);
 			return 0; //לשנות
 		}
 
@@ -483,7 +493,6 @@ public class AVLTree {
 	}
 
 	public static void joinNodes(IAVLNode small_tree, IAVLNode big_tree, IAVLNode x) {
-
 		if (small_tree.getKey() > big_tree.getKey()) {
 			while (big_tree.getHeight() > small_tree.getHeight())
 				big_tree = big_tree.getRight();
@@ -499,17 +508,21 @@ public class AVLTree {
 		}
 	}
 
-	public void joinEmpty(AVLTree t1, IAVLNode x) {
-		IAVLNode VirtualNode = new AVLNode();
-		if (this.empty()) {
-			joinNodes(VirtualNode, t1.getRoot(), x);
-			this.setRoot(t1.getRoot());
-		} else { //t1.empty()
-			joinNodes(VirtualNode, this.getRoot(), x);
-			t1.setRoot(this.getRoot());
+	public void joinEmpty(AVLTree t, IAVLNode x) {
+		IAVLNode node = t.getRoot();
+		if (x.getKey() > node.getKey()){
+			while (node.getHeight() > 0)
+				node = node.getRight();
+			node.getParent().setRight(x);
+			x.setLeft(node);
+		} else { //join left
+			while (node.getHeight() > 0)
+				node = node.getLeft();
+			node.getParent().setLeft(x);
+			x.setRight(node);
 		}
-	}
 
+	}
 
 }
 	/**

@@ -133,17 +133,24 @@ public class Testing {
     }
 
     public static void main(String[] args){
-        int TESTS_AMOUNT = 0;
-        for (int i = 0; i < TESTS_AMOUNT; i++) {
-            int TREE_SIZE = rd.nextInt(20) + 2;
-            int POP_AMOUNT = rd.nextInt(TREE_SIZE);
-            AVLTree tree = genRandTree(TREE_SIZE, -10 ,RAND_LIM);
-            popRandomNodes(tree,POP_AMOUNT);
-            testTree(tree);
-            PrintBST.print(tree.getRoot());
-        }
+//        int TESTS_AMOUNT = 1;
+//        for (int i = 0; i < TESTS_AMOUNT; i++) {
+//            int TREE_SIZE = rd.nextInt(10) + 2;
+//            int POP_AMOUNT = rd.nextInt(TREE_SIZE);
+//            AVLTree tree = genRandTree(TREE_SIZE, 10 ,20);
+//            popRandomNodes(tree,POP_AMOUNT);
+//            testTree(tree);
+//            PrintBST.print(tree.getRoot());
+//            TREE_SIZE = rd.nextInt(7) +1;
+//            POP_AMOUNT = rd.nextInt(TREE_SIZE);
+//            AVLTree tree2 = genRandTree(TREE_SIZE, 0 ,9);
+//            popRandomNodes(tree2,POP_AMOUNT);
+//            testTree(tree2);
+//            PrintBST.print(tree2.getRoot());
+//            //tree.join(,tree2)
+//        }
 
-        testJoinSplit(2);
+        //testJoinSplit(2);
 
 //        //different sizes tests
 //        for (int j = 0; j < 30; j++) {
@@ -155,6 +162,35 @@ public class Testing {
 //                }
 //            }
 //        }
+        AVLTree tree = new AVLTree();
+        tree.insert(34, "");
+        tree.insert(52, "");
+        tree.insert(21, "");
+        tree.insert(72, "");
+        tree.insert(66, "");
+        tree.insert(98, "");
+        tree.insert(50, "");
+        tree.insert(83, "");
+        PrintBST.print(tree.getRoot());
+        AVLTree tree2 = new AVLTree();
+        tree2.insert(9, "");
+        tree2.insert(8, "");
+        tree2.insert(7, "");
+        tree2.insert(1, "");
+        tree2.insert(6, "");
+        tree2.insert(10, "");
+        tree2.insert(11, "");
+        tree2.insert(12, "");
+        tree2.insert(14, "");
+        tree2.insert(15, "");
+        tree2.insert(16, "");
+
+        IAVLNode x = new AVLNode(20,"");
+        PrintBST.print(tree2.getRoot());
+        tree.join(x, tree2);
+        PrintBST.print(tree.getRoot());
+
+
 
         System.out.println("done!");
     }
