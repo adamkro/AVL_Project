@@ -44,18 +44,24 @@ public class Testing {
         PrintBST.print(t2.getRoot());
         t1.join(new AVLNode(101, ""), t2);
         int total_size = t1.size();
-        //testTree(t1);
-        System.out.println("After join:");
+        testTree(t1);
+        System.out.println("first join:");
         PrintBST.print(t1.getRoot());
-        System.out.println("********************");
         int[] inorder = t1.keysToArray();
         for (int i = 0; i < Math.min(numOfJoins, total_size); i++) {
             int keyRemoved = inorder[rd.nextInt(inorder.length)];
+            System.out.println("Split by key: " + keyRemoved);
             AVLTree[] split = t1.split(keyRemoved);
+            System.out.println("smaller than key tree: ");
+            PrintBST.print(split[0].getRoot());
+            System.out.println("bigger than key tree: ");
+            PrintBST.print(split[1].getRoot());
             testTree(split[0]);
             testTree(split[1]);
             split[0].join(new AVLNode(keyRemoved,""),split[1]);
             t1 = split[0];
+            System.out.println("tree after rejoin:");
+            PrintBST.print(t1.getRoot());
             testTree(t1);
         }
     }
@@ -150,7 +156,7 @@ public class Testing {
 //            //tree.join(,tree2)
 //        }
 
-        //testJoinSplit(2);
+        testJoinSplit(2);
 
 //        //different sizes tests
 //        for (int j = 0; j < 30; j++) {
@@ -162,34 +168,34 @@ public class Testing {
 //                }
 //            }
 //        }
-        AVLTree tree = new AVLTree();
-        tree.insert(34, "");
-        tree.insert(52, "");
-        tree.insert(21, "");
-        tree.insert(72, "");
-        tree.insert(66, "");
-        tree.insert(98, "");
-        tree.insert(50, "");
-        tree.insert(83, "");
-        PrintBST.print(tree.getRoot());
-        AVLTree tree2 = new AVLTree();
-        tree2.insert(9, "");
-        tree2.insert(8, "");
-        tree2.insert(7, "");
-        tree2.insert(1, "");
-        tree2.insert(6, "");
-        tree2.insert(10, "");
-        tree2.insert(11, "");
-        tree2.insert(12, "");
-        tree2.insert(14, "");
-        tree2.insert(15, "");
-        tree2.insert(16, "");
-
-        IAVLNode x = new AVLNode(20,"");
-        PrintBST.print(tree2.getRoot());
-        tree.join(x, tree2);
-        PrintBST.print(tree.getRoot());
-
+//        AVLTree tree = new AVLTree();
+//        tree.insert(34, "");
+//        tree.insert(52, "");
+//        tree.insert(21, "");
+//        tree.insert(72, "");
+//        tree.insert(66, "");
+//        tree.insert(98, "");
+//        tree.insert(50, "");
+//        tree.insert(83, "");
+//        PrintBST.print(tree.getRoot());
+//        AVLTree tree2 = new AVLTree();
+//        tree2.insert(9, "");
+//        tree2.insert(8, "");
+//        tree2.insert(7, "");
+//        tree2.insert(1, "");
+//        tree2.insert(6, "");
+//        tree2.insert(10, "");
+//        tree2.insert(11, "");
+//        tree2.insert(12, "");
+//        tree2.insert(14, "");
+//        tree2.insert(15, "");
+//        tree2.insert(16, "");
+//
+//        IAVLNode x = new AVLNode(20,"");
+//        PrintBST.print(tree2.getRoot());
+//        tree.join(x, tree2);
+//        PrintBST.print(tree.getRoot());
+//
 
 
         System.out.println("done!");
