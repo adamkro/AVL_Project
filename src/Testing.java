@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class Testing {
     private static int RAND_LIM = 100;
-    private static final Random rd = new Random();
+        private static final Random rd = new Random();
 
     public static int calHeight(IAVLNode node){
         if (!node.isRealNode())
@@ -38,11 +38,16 @@ public class Testing {
     }
 
     public static void testJoinSplit(int numOfJoins){
-        AVLTree t1 = genRandTree(rd.nextInt(50), 0, 100);
-        AVLTree t2 = genRandTree(rd.nextInt(50), 101, 200);
+        AVLTree t1 = genRandTree(3, 0, 100); //rd.nextInt(50)
+        AVLTree t2 = genRandTree(3, 101, 200); //rd.nextInt(50)
+        PrintBST.print(t1.getRoot());
+        PrintBST.print(t2.getRoot());
         t1.join(new AVLNode(101, ""), t2);
         int total_size = t1.size();
-        testTree(t1);
+        //testTree(t1);
+        System.out.println("After join:");
+        PrintBST.print(t1.getRoot());
+        System.out.println("********************");
         int[] inorder = t1.keysToArray();
         for (int i = 0; i < Math.min(numOfJoins, total_size); i++) {
             int keyRemoved = inorder[rd.nextInt(inorder.length)];
@@ -55,56 +60,53 @@ public class Testing {
         }
     }
 
+    public static void alert(AVLTree t, String testName){
+        System.out.println("*****************************************************************************");
+        System.out.println("Tree failed "+ testName);
+        System.out.println(Arrays.toString(t.keysToArray()));
+        PrintBST.print(t.getRoot());
+    }
 
     public static void testTree(AVLTree t){
-        //System.out.println("Testing tree...");
         IAVLNode root = t.getRoot();
         if (!isBST(root)) {
-            System.out.println("*****************************************************************************");
-            System.out.println("this tree failed BST test: ");
-            System.out.println(Arrays.toString(t.keysToArray()));
-            PrintBST.print(root);
+            alert(t, "BST test");
         }
         if (!CorrectHeights(root)) {
-            System.out.println("*****************************************************************************");
-            System.out.println("this tree failed Heights test:");
-            System.out.println(Arrays.toString(t.keysToArray()));
-            PrintBST.print(root);
+            alert(t, "Heights test");
         }
         if(!isAVL(root)){
-            System.out.println("*****************************************************************************");
-            System.out.println("this tree failed Heights test:");
-            System.out.println(Arrays.toString(t.keysToArray()));
-            PrintBST.print(root);
+            alert(t, "isAVL test");
         }
         if(!inorderTest(t)){
-            System.out.println("*****************************************************************************");
-            System.out.println("this tree failed inorder test or size test:");
-            System.out.println(Arrays.toString(t.keysToArray()));
-            PrintBST.print(root);
+            alert(t, "inorder test");
+        }
+        if(!sizeTest(t.getRoot())){
+            alert(t, "Root size test");
         }
     }
     public static boolean inorderTest(AVLTree tree){
         int[] lst = tree.keysToArray();
         int[] copiedArray = lst.clone();
         Arrays.sort(lst);
-        return Arrays.equals(lst, copiedArray) && lst.length == tree.size();
+        return Arrays.equals(lst, copiedArray);
     }
 
-    public static AVLTree genRandTree(int size){
-        int num;
-        Set<Integer> hs= new HashSet<Integer>();
-        AVLTree t = new AVLTree();
-        while(size > 0) {
-            num = rd.nextInt(RAND_LIM);
-            if (hs.contains(num))
-                continue;
-            hs.add(num);
-            t.insert(num, "");
-            size--;
-        }
-        return t;
+    public static boolean sizeTest(IAVLNode node){
+        if (!node.isRealNode()) return true;
+        return (nodeSizeTest(node) && sizeTest(node.getLeft()) && sizeTest(node.getRight()));
     }
+    public static boolean nodeSizeTest(IAVLNode node){
+        if (!node.isRealNode()) return true;
+        return (node.getSize() == sizeEval(node));
+    }
+    public static int sizeEval(IAVLNode node){
+        if (!node.isRealNode()) return 0;
+        int left = sizeEval(node.getLeft());
+        int right = sizeEval(node.getRight());
+        return ( left + right + 1);
+    }
+
     public static AVLTree genRandTree(int size, int min,int max){ //genRandTree with range
         int num;
         Set<Integer> hs= new HashSet<Integer>();
@@ -131,15 +133,25 @@ public class Testing {
     }
 
     public static void main(String[] args){
-        int TESTS_AMOUNT = 10;
+        int TESTS_AMOUNT = 0;
         for (int i = 0; i < TESTS_AMOUNT; i++) {
             int TREE_SIZE = rd.nextInt(20) + 2;
             int POP_AMOUNT = rd.nextInt(TREE_SIZE);
-            AVLTree tree = genRandTree(TREE_SIZE);
+            AVLTree tree = genRandTree(TREE_SIZE, -10 ,RAND_LIM);
             popRandomNodes(tree,POP_AMOUNT);
             testTree(tree);
             PrintBST.print(tree.getRoot());
         }
+
+        //testJoinSplit(2);
+        for (int i = 0; i < 5; i++) {
+            AVLTree t = genRandTree(5, 0, 10);
+            //PrintBST.print(t.getRoot());
+            if(!sizeTest(t.getRoot())){
+                alert(t, "Root size test");
+            }
+        }
+
         System.out.println("done!");
     }
 }

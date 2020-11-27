@@ -35,8 +35,8 @@ public class PrintBST
                     next.add(null);
                     next.add(null);
                 } else {
-                    //String aa = Integer.toString(n.getKey())+"("+Integer.toString(n.getHeight())+")";
-                    String aa = Integer.toString(n.getSize());
+                    String aa = Integer.toString(n.getKey())+"("+Integer.toString(n.getSize())+")";
+                    //String aa = Integer.toString(n.getKey());
                     line.add(aa);
                     if (aa.length() > widest) widest = aa.length();
 
