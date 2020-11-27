@@ -448,11 +448,28 @@ public class AVLTree {
 			this.setRoot(x);
 			return 1;
 		}
-		if (t.empty() || this.empty()) //one of the trees are empty
+		if (t.empty() || this.empty()) { //one of the trees are empty
 			joinEmpty(t, x);
+			return 0; //לשנות
+		}
 
 		int rank_t = t.getRoot().getHeight();
 		int rank_T = this.getRoot().getHeight();
+		if (rank_t == rank_T){
+			if (x.getKey() > t.getRoot().getKey()) {
+				x.setLeft(t.getRoot());
+				x.setRight(this.getRoot());
+			}
+			else{
+				x.setRight(t.getRoot());
+				x.setLeft(this.getRoot());
+			}
+			x.updateHeight();
+			x.updateSize();
+			t.setRoot(x);
+			this.setRoot(x);
+			return 0;
+		}
 		if (rank_T < rank_t) {
 			joinNodes(this.getRoot(), t.getRoot(), x);
 			this.setRoot(t.getRoot());
