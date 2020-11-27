@@ -476,7 +476,6 @@ public class AVLTree {
 		} else { //join left
 			while (big_tree.getHeight() > small_tree.getHeight())
 				big_tree = big_tree.getLeft();
-			;
 			x.setLeft(small_tree);
 			big_tree.getParent().setLeft(x);
 			x.setRight(big_tree);
