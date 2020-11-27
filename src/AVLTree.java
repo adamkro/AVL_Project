@@ -13,7 +13,7 @@ import java.util.ArrayList;
 //CHECK IF WE CAN ADD METHODS TO INTERFACE
 //CHECK IF WE NEED A TREE CONSTRUCTOR OR ADD FIRST ROOT WITH INSERT
 //IAVL AND AVL WERE PUBLIC AND WE CHANGED IT
-
+//SHOULD WE COUNT SIZEABOVE STEPS WHEN NO BALANCE NEEDED?
 public class AVLTree {
 	//private int size = 0;
 	private IAVLNode root = null;
@@ -88,6 +88,8 @@ public class AVLTree {
 		}
 		if (parent.getHeight() == 0) { // CASE: NOT UNARY
 			this.balance(parent, true);
+		} else {
+			this.updateSizeAbove(parent);
 		}
 		return 0;
 	}

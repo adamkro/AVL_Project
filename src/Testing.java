@@ -82,7 +82,7 @@ public class Testing {
             alert(t, "inorder test");
         }
         if(!sizeTest(t.getRoot())){
-            alert(t, "Root size test");
+            alert(t, "Size test");
         }
     }
     public static boolean inorderTest(AVLTree tree){
@@ -93,7 +93,7 @@ public class Testing {
     }
 
     public static boolean sizeTest(IAVLNode node){
-        if (!node.isRealNode()) return true;
+        if (node == null || !node.isRealNode()) return true;
         return (nodeSizeTest(node) && sizeTest(node.getLeft()) && sizeTest(node.getRight()));
     }
     public static boolean nodeSizeTest(IAVLNode node){
@@ -143,14 +143,18 @@ public class Testing {
             PrintBST.print(tree.getRoot());
         }
 
-        //testJoinSplit(2);
-        for (int i = 0; i < 5; i++) {
-            AVLTree t = genRandTree(5, 0, 10);
-            //PrintBST.print(t.getRoot());
-            if(!sizeTest(t.getRoot())){
-                alert(t, "Root size test");
-            }
-        }
+        testJoinSplit(2);
+
+//        //different sizes tests
+//        for (int j = 0; j < 30; j++) {
+//            for (int i = 0; i < 500; i++) {
+//                AVLTree t = genRandTree(j, 0, 100);
+//                //PrintBST.print(t.getRoot());
+//                if(!sizeTest(t.getRoot())){
+//                    alert(t, "Root size test");
+//                }
+//            }
+//        }
 
         System.out.println("done!");
     }
