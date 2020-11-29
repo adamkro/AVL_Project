@@ -173,29 +173,47 @@ public class Testing {
 //        tree.insert(52, "");
 //        tree.insert(21, "");
 //        tree.insert(72, "");
-//        tree.insert(66, "");
-//        tree.insert(98, "");
-//        tree.insert(50, "");
-//        tree.insert(83, "");
 //        PrintBST.print(tree.getRoot());
 //        AVLTree tree2 = new AVLTree();
-//        tree2.insert(9, "");
-//        tree2.insert(8, "");
-//        tree2.insert(7, "");
-//        tree2.insert(1, "");
-//        tree2.insert(6, "");
-//        tree2.insert(10, "");
-//        tree2.insert(11, "");
-//        tree2.insert(12, "");
-//        tree2.insert(14, "");
-//        tree2.insert(15, "");
-//        tree2.insert(16, "");
+//        AVLTree tree3 = new AVLTree();
+//        AVLTree tree4 = new AVLTree();
+//        AVLTree tree5 = new AVLTree();
+//        tree5.insert(9, "");
+//
 //
 //        IAVLNode x = new AVLNode(20,"");
-//        PrintBST.print(tree2.getRoot());
+//        PrintBST.print(tree.getRoot());
 //        tree.join(x, tree2);
 //        PrintBST.print(tree.getRoot());
+//        IAVLNode y = new AVLNode(18,"");
+//        tree3.join(y, tree);
+//        PrintBST.print(tree.getRoot());
+//        IAVLNode z = new AVLNode(100,"");
+//        tree4.join(z, tree);
+//        PrintBST.print(tree.getRoot());
+//        IAVLNode z2 = new AVLNode(10,"");
+//        tree5.join(z2, tree);
+//        PrintBST.print(tree5.getRoot());
 //
+//        AVLTree tree6 = new AVLTree();
+//        AVLTree tree7 = new AVLTree();
+//        IAVLNode z4 = new AVLNode(10,"");
+//        tree6.join(z4, tree7);
+//        PrintBST.print(tree7.getRoot());
+
+//        AVLTree tree55 = new AVLTree();
+//        tree55.insert(107, "");
+//        tree55.insert(54, "");
+//        tree55.insert(137, "");
+//        tree55.insert(63, "");
+//        tree55.insert(2, "");
+//        tree55.insert(133, "");
+//        tree55.insert(178, "");
+//        tree55.insert(77, ""); //
+//        PrintBST.print(tree55.getRoot());
+//        AVLTree[] av = tree55.split(63);
+//        PrintBST.print(av[0].getRoot());
+//        PrintBST.print(av[1].getRoot());
 
 
         System.out.println("done!");

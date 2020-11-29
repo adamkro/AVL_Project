@@ -407,10 +407,12 @@ public class AVLTree {
 		res[0] = smaller;
 		res[1] = bigger;
 		IAVLNode node = node_x.getParent();
-		if (node_x.getIsRightChild())
-			node.setRight(new AVLNode());
-		else
-			node.setLeft(new AVLNode());
+		if (node != null) {
+			if (node_x.getIsRightChild())
+				node.setRight(new AVLNode());
+			else
+				node.setLeft(new AVLNode());
+		}
 		node_x.nullify();
 		IAVLNode tmp;
 		while (node != null) {
@@ -514,13 +516,15 @@ public class AVLTree {
 	public void joinEmpty(AVLTree t, IAVLNode x) {
 		IAVLNode node = t.getRoot();
 		if (x.getKey() > node.getKey()){
-			while (node.getHeight() > 0)
+			while (node.getHeight() >= 0)
 				node = node.getRight();
+			//if (node.getParent() != null)
 			node.getParent().setRight(x);
 			x.setLeft(node);
 		} else { //join left
-			while (node.getHeight() > 0)
+			while (node.getHeight() >= 0)
 				node = node.getLeft();
+			//if (node.getParent() != null)
 			node.getParent().setLeft(x);
 			x.setRight(node);
 		}
