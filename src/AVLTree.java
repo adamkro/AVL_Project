@@ -183,9 +183,7 @@ public class AVLTree {
 			else
 				node.getParent().setLeft(successor);
 		}
-		node.setParent(null);
-		node.setLeft(null);
-		node.setRight(null);
+		node.nullify();
 		if (nodeToBalance == node) //case that that successor is child of node
 			nodeToBalance = successor;
 		return nodeToBalance;
@@ -409,6 +407,10 @@ public class AVLTree {
 		res[0] = smaller;
 		res[1] = bigger;
 		IAVLNode node = node_x.getParent();
+		if (node_x.getIsRightChild())
+			node.setRight(new AVLNode());
+		else
+			node.setLeft(new AVLNode());
 		node_x.nullify();
 		IAVLNode tmp;
 		while (node != null) {
@@ -499,6 +501,7 @@ public class AVLTree {
 			x.setRight(small_tree);
 			big_tree.getParent().setRight(x);
 			x.setLeft(big_tree);
+
 		} else { //join left
 			while (big_tree.getHeight() > small_tree.getHeight())
 				big_tree = big_tree.getLeft();
@@ -584,9 +587,9 @@ public class AVLTree {
   			this.real = true;
   			this.height = 0;
   			this.parent = null;
-  			this.right = new AVLNode();
-  			this.left = new AVLNode();
-  			this.size = 1;
+  			this.setRight(new AVLNode());
+			this.setLeft(new AVLNode());
+			this.size = 1;
 		}
 
 		public int getKey() {
