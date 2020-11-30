@@ -38,8 +38,8 @@ public class Testing {
     }
 
     public static void testJoinSplit(int numOfJoins){
-        AVLTree t1 = genRandTree(3, 0, 100); //rd.nextInt(50)
-        AVLTree t2 = genRandTree(3, 101, 200); //rd.nextInt(50)
+        AVLTree t1 = genRandTree(rd.nextInt(20), 0, 100);
+        AVLTree t2 = genRandTree(rd.nextInt(20), 101, 200);
         PrintBST.print(t1.getRoot());
         PrintBST.print(t2.getRoot());
         t1.join(new AVLNode(101, ""), t2);
@@ -75,21 +75,24 @@ public class Testing {
 
     public static void testTree(AVLTree t){
         IAVLNode root = t.getRoot();
-        if (!isBST(root)) {
-            alert(t, "BST test");
+        if (!t.empty()){
+            if (!isBST(root)) {
+                alert(t, "BST test");
+            }
+            if (!CorrectHeights(root)) {
+                alert(t, "Heights test");
+            }
+            if(!isAVL(root)){
+                alert(t, "isAVL test");
+            }
+            if(!inorderTest(t)){
+                alert(t, "inorder test");
+            }
+            if(!sizeTest(t.getRoot())){
+                alert(t, "Size test");
+            }
         }
-        if (!CorrectHeights(root)) {
-            alert(t, "Heights test");
-        }
-        if(!isAVL(root)){
-            alert(t, "isAVL test");
-        }
-        if(!inorderTest(t)){
-            alert(t, "inorder test");
-        }
-        if(!sizeTest(t.getRoot())){
-            alert(t, "Size test");
-        }
+        System.out.println("tree test success");
     }
     public static boolean inorderTest(AVLTree tree){
         int[] lst = tree.keysToArray();
@@ -155,8 +158,9 @@ public class Testing {
 //            PrintBST.print(tree2.getRoot());
 //            //tree.join(,tree2)
 //        }
-
-        testJoinSplit(2);
+        for (int i = 0; i < 5; i++) {
+            testJoinSplit(3);
+        }
 
 //        //different sizes tests
 //        for (int j = 0; j < 30; j++) {
@@ -202,16 +206,15 @@ public class Testing {
 //        PrintBST.print(tree7.getRoot());
 
 //        AVLTree tree55 = new AVLTree();
-//        tree55.insert(107, "");
-//        tree55.insert(54, "");
-//        tree55.insert(137, "");
-//        tree55.insert(63, "");
-//        tree55.insert(2, "");
-//        tree55.insert(133, "");
-//        tree55.insert(178, "");
-//        tree55.insert(77, ""); //
+//        tree55.insert(101, "");
+//        tree55.insert(171, "");
+//        tree55.insert(50, "");
+//        tree55.insert(98, "");
+//        tree55.insert(43, "");
+//        tree55.insert(170, "");
+//        tree55.insert(192, "");
 //        PrintBST.print(tree55.getRoot());
-//        AVLTree[] av = tree55.split(63);
+//        AVLTree[] av = tree55.split(98);
 //        PrintBST.print(av[0].getRoot());
 //        PrintBST.print(av[1].getRoot());
 
