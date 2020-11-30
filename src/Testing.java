@@ -40,28 +40,28 @@ public class Testing {
     public static void testJoinSplit(int numOfJoins){
         AVLTree t1 = genRandTree(rd.nextInt(20), 0, 100);
         AVLTree t2 = genRandTree(rd.nextInt(20), 101, 200);
-        PrintBST.print(t1.getRoot());
-        PrintBST.print(t2.getRoot());
+        //PrintBST.print(t1.getRoot());
+        //PrintBST.print(t2.getRoot());
         t1.join(new AVLNode(101, ""), t2);
         int total_size = t1.size();
         testTree(t1);
-        System.out.println("first join:");
-        PrintBST.print(t1.getRoot());
+        //System.out.println("first join:");
+        //PrintBST.print(t1.getRoot());
         int[] inorder = t1.keysToArray();
         for (int i = 0; i < Math.min(numOfJoins, total_size); i++) {
             int keyRemoved = inorder[rd.nextInt(inorder.length)];
-            System.out.println("Split by key: " + keyRemoved);
+            //System.out.println("Split by key: " + keyRemoved);
             AVLTree[] split = t1.split(keyRemoved);
-            System.out.println("smaller than key tree: ");
-            PrintBST.print(split[0].getRoot());
-            System.out.println("bigger than key tree: ");
-            PrintBST.print(split[1].getRoot());
+            //System.out.println("smaller than key tree: ");
+            //PrintBST.print(split[0].getRoot());
+            //System.out.println("bigger than key tree: ");
+            //PrintBST.print(split[1].getRoot());
             testTree(split[0]);
             testTree(split[1]);
             split[0].join(new AVLNode(keyRemoved,""),split[1]);
             t1 = split[0];
-            System.out.println("tree after rejoin:");
-            PrintBST.print(t1.getRoot());
+            //System.out.println("tree after rejoin:");
+            //PrintBST.print(t1.getRoot());
             testTree(t1);
         }
     }
@@ -158,7 +158,7 @@ public class Testing {
 //            PrintBST.print(tree2.getRoot());
 //            //tree.join(,tree2)
 //        }
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 15; i++) {
             testJoinSplit(3);
         }
 
@@ -204,19 +204,20 @@ public class Testing {
 //        IAVLNode z4 = new AVLNode(10,"");
 //        tree6.join(z4, tree7);
 //        PrintBST.print(tree7.getRoot());
-
+//
 //        AVLTree tree55 = new AVLTree();
+//        tree55.insert(113, "");
 //        tree55.insert(101, "");
-//        tree55.insert(171, "");
-//        tree55.insert(50, "");
-//        tree55.insert(98, "");
-//        tree55.insert(43, "");
-//        tree55.insert(170, "");
-//        tree55.insert(192, "");
+//        tree55.insert(120, "");
+//        tree55.insert(167, "");
+//        tree55.insert(1, "");
+//        AVLTree tree66 = new AVLTree();
+//        tree66.insert(180, "");
+//        IAVLNode node = new AVLNode(173,"");
 //        PrintBST.print(tree55.getRoot());
-//        AVLTree[] av = tree55.split(98);
-//        PrintBST.print(av[0].getRoot());
-//        PrintBST.print(av[1].getRoot());
+//        PrintBST.print(tree66.getRoot());
+//        tree55.join(node, tree66);
+//        PrintBST.print(tree55.getRoot());
 
 
         System.out.println("done!");

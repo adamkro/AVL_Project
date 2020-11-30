@@ -253,7 +253,7 @@ public class AVLTree {
 					} else
 						node = node.getParent();
 					break;
-				case (-2):
+					case (-2):
 					if (rankDifference(node.getRight()) == 1) {
 						IAVLNode right = node.getRight();
 						rotateRight(right.getLeft(), right);
@@ -463,7 +463,7 @@ public class AVLTree {
 				this.setRoot(t.getRoot());
 			}
 			x.update();
-			this.balance(x.getParent(), true);
+			this.balance(x.getParent(), false);
 			return 0; //לשנות
 		}
 
@@ -491,7 +491,7 @@ public class AVLTree {
 			t.setRoot(this.getRoot());
 		}
 		x.update();
-		this.balance(x.getParent(), true);
+		this.balance(x.getParent(), false);
 		return Math.abs(rank_T - rank_t) + 1;
 	}
 
