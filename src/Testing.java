@@ -37,12 +37,12 @@ public class Testing {
                 isBST(node.getLeft()));
     }
 
-    public static void testJoinSplit(int numOfJoins){
+    public static void testJoinSplit(int numOfJoins, boolean show){
         AVLTree t1 = genRandTree(rd.nextInt(20), 0, 100);
         AVLTree t2 = genRandTree(rd.nextInt(20), 101, 200);
         //PrintBST.print(t1.getRoot());
         //PrintBST.print(t2.getRoot());
-        t1.join(new AVLNode(101, ""), t2);
+        t1.join(new AVLNode(100, ""), t2);
         int total_size = t1.size();
         testTree(t1);
         //System.out.println("first join:");
@@ -50,18 +50,23 @@ public class Testing {
         int[] inorder = t1.keysToArray();
         for (int i = 0; i < Math.min(numOfJoins, total_size); i++) {
             int keyRemoved = inorder[rd.nextInt(inorder.length)];
-            //System.out.println("Split by key: " + keyRemoved);
+            if (show)
+                System.out.println("Split by key: " + keyRemoved);
             AVLTree[] split = t1.split(keyRemoved);
-            //System.out.println("smaller than key tree: ");
-            //PrintBST.print(split[0].getRoot());
-            //System.out.println("bigger than key tree: ");
-            //PrintBST.print(split[1].getRoot());
+            if (show) {
+                System.out.println("smaller than key tree: ");
+                PrintBST.print(split[0].getRoot());
+                System.out.println("bigger than key tree: ");
+                PrintBST.print(split[1].getRoot());
+            }
             testTree(split[0]);
             testTree(split[1]);
             split[0].join(new AVLNode(keyRemoved,""),split[1]);
             t1 = split[0];
-            //System.out.println("tree after rejoin:");
-            //PrintBST.print(t1.getRoot());
+            if (show) {
+                System.out.println("tree after rejoin:");
+                PrintBST.print(t1.getRoot());
+            }
             testTree(t1);
         }
     }
@@ -92,7 +97,7 @@ public class Testing {
                 alert(t, "Size test");
             }
         }
-        System.out.println("tree test success");
+        //System.out.println("tree test success");
     }
     public static boolean inorderTest(AVLTree tree){
         int[] lst = tree.keysToArray();
@@ -158,8 +163,8 @@ public class Testing {
 //            PrintBST.print(tree2.getRoot());
 //            //tree.join(,tree2)
 //        }
-        for (int i = 0; i < 15; i++) {
-            testJoinSplit(3);
+        for (int i = 0; i < 1000; i++) {
+            testJoinSplit(rd.nextInt(20), false);
         }
 
 //        //different sizes tests
