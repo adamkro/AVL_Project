@@ -448,12 +448,19 @@ public class AVLTree {
 	 */
 
 	public int join(IAVLNode x, AVLTree t) {
+		int rank_t = -1;
+		int rank_this = -1;
+		if (!t.empty())
+			rank_t = t.getRoot().getHeight();
+		if (!this.empty())
+			rank_this = this.getRoot().getHeight();
+
 		if (t.empty() && this.empty()) { //both trees are empty
 			t.setRoot(x);
 			this.setRoot(x);
 			return 1;
 		}
-		if (t.empty() || this.empty()) { //one of the trees are empty
+		else if (t.empty() || this.empty()) { //one of the trees are empty
 			if (t.empty()){
 				joinEmpty(this,x);
 				t.setRoot(this.getRoot());
@@ -462,52 +469,51 @@ public class AVLTree {
 				joinEmpty(t,x);
 				this.setRoot(t.getRoot());
 			}
-			x.update();
-			this.balance(x.getParent(), false);
-			return 0; //לשנות
 		}
-
-		int rank_t = t.getRoot().getHeight();
-		int rank_T = this.getRoot().getHeight();
-		if (rank_t == rank_T){
-			if (x.getKey() > t.getRoot().getKey()) {
-				x.setLeft(t.getRoot());
-				x.setRight(this.getRoot());
-			}
-			else{
-				x.setRight(t.getRoot());
-				x.setLeft(this.getRoot());
-			}
-			x.update();
-			t.setRoot(x);
-			this.setRoot(x);
-			return 0;
-		}
-		if (rank_T < rank_t) {
-			joinNodes(this.getRoot(), t.getRoot(), x);
+		else if (rank_this < rank_t) {
+			t.joinNodes(this.getRoot(), t.getRoot(), x);
 			this.setRoot(t.getRoot());
-		} else {
-			joinNodes(t.getRoot(), this.getRoot(), x);
+		}
+		else if (rank_this == rank_t || rank_this > rank_t) {
+			this.joinNodes(t.getRoot(), this.getRoot(), x);
 			t.setRoot(this.getRoot());
 		}
 		x.update();
-		this.balance(x.getParent(), false);
-		return Math.abs(rank_T - rank_t) + 1;
+		// special case - one rotation if needed in the first balance step
+		if (x.getParent() != null) {
+			int diff = rankDifference(x.getParent());
+			if (diff == 2)
+				rotateRight (x.getParent().getLeft(), x.getParent());
+			if (diff == -2)
+				rotateLeft(x.getParent().getRight(), x.getParent());
+		}
+		//
+		this.balance(x.getParent(), true); // Continues to balance the tree as insert
+		if (t.empty() || this.empty()){
+			return Math.max(rank_this,rank_t) + 1; //Returns complexity
+		}
+		return Math.abs(rank_this - rank_t) + 1; //Returns complexity
 	}
 
-	public static void joinNodes(IAVLNode small_tree, IAVLNode big_tree, IAVLNode x) {
-		if (small_tree.getKey() > big_tree.getKey()) {
+	public void joinNodes(IAVLNode small_tree, IAVLNode big_tree, IAVLNode x) {
+		if (small_tree.getKey() > big_tree.getKey()) { //join right
 			while (big_tree.getHeight() > small_tree.getHeight())
 				big_tree = big_tree.getRight();
 			x.setRight(small_tree);
-			big_tree.getParent().setRight(x);
+			if (big_tree.getParent() != null) //not root
+				big_tree.getParent().setRight(x);
+			else
+				this.setRoot(x); // x is root, case of rank_this == rank_t
 			x.setLeft(big_tree);
 
 		} else { //join left
 			while (big_tree.getHeight() > small_tree.getHeight())
 				big_tree = big_tree.getLeft();
 			x.setLeft(small_tree);
-			big_tree.getParent().setLeft(x);
+			if (big_tree.getParent() != null) //not root
+				big_tree.getParent().setLeft(x);
+			else
+				this.setRoot(x); // x is root, case of rank_this == rank_t
 			x.setRight(big_tree);
 		}
 	}
