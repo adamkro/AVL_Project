@@ -17,6 +17,8 @@ import java.util.ArrayList;
 public class AVLTree {
 	//private int size = 0;
 	private IAVLNode root = null;
+	private IAVLNode min = null;
+	private IAVLNode max = null;
 
 	/**
 	 * public boolean empty()
@@ -26,6 +28,25 @@ public class AVLTree {
 	public boolean empty() {
 		return root == null;
 	}
+
+	public IAVLNode getMin() {
+		return this.min;
+	}
+
+	private void setMin(IAVLNode node) {
+		this.min = node;
+	}
+
+	public IAVLNode getMax() {
+		return this.max;
+	}
+
+	private void setMax(IAVLNode node) {
+		this.max = node;
+	}
+
+
+
 
 	/**
 	 * public String search(int k)
@@ -72,15 +93,19 @@ public class AVLTree {
 	 * returns -1 if an item with key k already exists in the tree.
 	 */
 	public int insert(int k, String i) {
+		IAVLNode node = new AVLNode(k, i);
 		if (this.empty()) { // initialize new tree
-			this.setRoot(new AVLNode(k, i));
-			//this.size = 1;
+			this.setRoot(node);
+			this.setMin(node);
+			this.setMax(node);
 			return 0;
 		}
 		if (this.search(k) != null) return -1; // CHECK IF = NULL IS OK
-		//this.size += 1;
 		IAVLNode parent = findParent(this.getRoot(), k);
-		IAVLNode node = new AVLNode(k, i);
+		if (k < this.getMin().getKey()) //update min if needed
+			this.setMin(node);
+		if (k > this.getMax().getKey()) //update max if needed
+			this.setMax(node);
 		if (k < parent.getKey()) { // insert left
 			parent.setLeft(node);
 		} else {
@@ -165,7 +190,31 @@ public class AVLTree {
 			nodeToBalance = simpleDelete(node);
 		else //inner node
 			nodeToBalance = replaceNode(node); //replace node with his successor
-		return (this.balance(nodeToBalance, false));
+
+		int balanceSteps = this.balance(nodeToBalance, false); //balance
+		if (k == this.getMin().getKey()) //find the new min
+			this.calculateMin();
+		if (k == this.getMax().getKey()) ////find the new max
+			this.calculateMax();
+		return balanceSteps;
+	}
+
+	private void calculateMax() {
+		if (this.empty())
+			this.setMax(null);
+		IAVLNode node = this.getRoot();
+		while (node.getRight().isRealNode())
+			node = node.getRight();
+		this.setMax(node);
+	}
+
+	private void calculateMin() {
+		if (this.empty())
+			this.setMin(null);
+		IAVLNode node = this.getRoot();
+		while (node.getLeft().isRealNode())
+			node = node.getLeft();
+		this.setMin(node);
 	}
 
 	public IAVLNode replaceNode(IAVLNode node) {
@@ -294,11 +343,9 @@ public class AVLTree {
 	 * or null if the tree is empty
 	 */
 	public String min() {
-		if (this.empty()) return null;
-		IAVLNode node = this.getRoot();
-		while (node.getLeft().isRealNode())
-			node = node.getLeft();
-		return node.getValue();
+		if (this.empty())
+			return null;
+		return this.getMin().getValue();
 	}
 
 	/**
@@ -308,11 +355,14 @@ public class AVLTree {
 	 * or null if the tree is empty
 	 */
 	public String max() {
-		if (this.empty()) return null;
-		IAVLNode node = this.getRoot();
-		while (node.getRight().isRealNode())
-			node = node.getRight();
-		return node.getValue();
+		if (this.empty())
+			return null;
+		return this.getMax().getValue();
+//		if (this.empty()) return null;
+//		IAVLNode node = this.getRoot();
+//		while (node.getRight().isRealNode())
+//			node = node.getRight();
+//		return node.getValue();
 	}
 
 	/**
@@ -456,27 +506,31 @@ public class AVLTree {
 			rank_this = this.getRoot().getHeight();
 
 		if (t.empty() && this.empty()) { //both trees are empty
-			t.setRoot(x);
 			this.setRoot(x);
+			this.setMin(x);
+			this.setMax(x);
 			return 1;
 		}
 		else if (t.empty() || this.empty()) { //one of the trees are empty
-			if (t.empty()){
+			if (t.empty())
 				joinEmpty(this,x);
-				t.setRoot(this.getRoot());
-			}
-			else{
+			else {
 				joinEmpty(t,x);
 				this.setRoot(t.getRoot());
 			}
+			if (x.getKey() < this.getRoot().getKey())
+				this.setMin(x);
+			if (x.getKey() > this.getRoot().getKey())
+				this.setMax(x);
 		}
 		else if (rank_this < rank_t) {
 			t.joinNodes(this.getRoot(), t.getRoot(), x);
+			this.newMaxMin(t);
 			this.setRoot(t.getRoot());
 		}
 		else if (rank_this == rank_t || rank_this > rank_t) {
 			this.joinNodes(t.getRoot(), this.getRoot(), x);
-			t.setRoot(this.getRoot());
+			this.newMaxMin(t);
 		}
 		x.update();
 		// special case - one rotation if needed in the first balance step
@@ -489,10 +543,17 @@ public class AVLTree {
 		}
 		//
 		this.balance(x.getParent(), true); // Continues to balance the tree as insert
-		if (t.empty() || this.empty()){
+		if (rank_t == -1 || rank_this == -1){
 			return Math.max(rank_this,rank_t) + 1; //Returns complexity
 		}
 		return Math.abs(rank_this - rank_t) + 1; //Returns complexity
+	}
+
+	private void newMaxMin(AVLTree t) {
+		if (this.getRoot().getKey() > t.getRoot().getKey())
+			this.setMin(t.getMin());
+		else //this.getRoot().getKey() > t.getRoot().getKey()
+			this.setMax(t.getMax());
 	}
 
 	public void joinNodes(IAVLNode small_tree, IAVLNode big_tree, IAVLNode x) {

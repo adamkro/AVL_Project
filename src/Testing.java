@@ -211,19 +211,23 @@ public class Testing {
 //        tree6.join(z4, tree7);
 //        PrintBST.print(tree7.getRoot());
 //
-//        AVLTree tree55 = new AVLTree();
-//        tree55.insert(113, "");
-//        tree55.insert(101, "");
-//        tree55.insert(120, "");
-//        tree55.insert(167, "");
-//        tree55.insert(1, "");
-//        AVLTree tree66 = new AVLTree();
-//        tree66.insert(180, "");
-//        IAVLNode node = new AVLNode(173,"");
-//        PrintBST.print(tree55.getRoot());
-//        PrintBST.print(tree66.getRoot());
-//        tree55.join(node, tree66);
-//        PrintBST.print(tree55.getRoot());
+        AVLTree tree55 = new AVLTree();
+        tree55.insert(113, "");
+        tree55.insert(101, "");
+        tree55.insert(120, "");
+        tree55.insert(167, "");
+        AVLTree tree66 = new AVLTree();
+        tree66.insert(180, "");
+        IAVLNode node = new AVLNode(173,"");
+        PrintBST.print(tree55.getRoot());
+        System.out.println(tree55.getRoot().getKey());
+        System.out.println(tree55.getMin().getKey());
+        System.out.println(tree55.getMax().getKey());
+        tree55.join(node, tree66);
+        PrintBST.print(tree55.getRoot());
+        System.out.println(tree55.getRoot().getKey());
+        System.out.println(tree55.getMin().getKey());
+        System.out.println(tree55.getMax().getKey());
 
 
         System.out.println("done!");
