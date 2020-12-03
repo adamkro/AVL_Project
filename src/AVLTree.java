@@ -200,8 +200,10 @@ public class AVLTree {
 	}
 
 	private void calculateMax() {
-		if (this.empty())
+		if (this.empty()) {
 			this.setMax(null);
+			return;
+		}
 		IAVLNode node = this.getRoot();
 		while (node.getRight().isRealNode())
 			node = node.getRight();
@@ -209,8 +211,10 @@ public class AVLTree {
 	}
 
 	private void calculateMin() {
-		if (this.empty())
+		if (this.empty()) {
 			this.setMin(null);
+			return;
+		}
 		IAVLNode node = this.getRoot();
 		while (node.getLeft().isRealNode())
 			node = node.getLeft();
@@ -475,6 +479,10 @@ public class AVLTree {
 			}
 			node = tmp;
 		}
+		res[0].calculateMin();
+		res[0].calculateMax();
+		res[1].calculateMin();
+		res[1].calculateMax();
 		return res;
 	}
 
@@ -483,6 +491,8 @@ public class AVLTree {
 		if (node.isRealNode()) {
 			tree.setRoot(node);
 			node.setParent(null);
+			tree.setMin(node);
+			tree.setMax(node);
 		}
 		return tree;
 	}

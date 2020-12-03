@@ -228,7 +228,13 @@ public class Testing {
         System.out.println(tree55.getRoot().getKey());
         System.out.println(tree55.getMin().getKey());
         System.out.println(tree55.getMax().getKey());
-
+        AVLTree[] trees = tree55.split(167);
+        PrintBST.print(trees[0].getRoot());
+        System.out.println(trees[0].getMin().getKey());
+        System.out.println(trees[0].getMax().getKey());
+        PrintBST.print(trees[1].getRoot());
+        System.out.println(trees[1].getMin().getKey());
+        System.out.println(trees[1].getMax().getKey());
 
         System.out.println("done!");
     }
