@@ -56,4 +56,114 @@ public class trash {
 //	return count;
 //}
 
+//        AVLTree tree = new AVLTree();
+//        tree.insert(//        tree.insert(30, "");
+////        tree.insert(21, "");
+////        tree.insert(72, "");
+////        tree.insert(66, "");
+////        tree.insert(98, "");
+////        tree.insert(50, "");
+////        tree.insert(83, "");
+////        tree.delete(72);
+////        PrintBST.print(tree.getRoot());
+////        tree.delete(21);
+////        PrintBST.print(tree.getRoot());
+////        tree.delete(72);
+////        PrintBST.print(tree.getRoot());
+//
+//
+////tree.insert(1, "");
+////        tree.insert(9, "");
+////        tree.insert(5, "");
+////        tree.insert(10, "");
+////        tree.insert(2, "");
+////        tree.insert(7, "");
+////        tree.insert(4, "");
+////        tree.insert(3, "");
+////        tree.insert(6, "");
+////        tree.insert(11, "");
+////        tree.insert(12, "");
+////        tree.insert(13, "");
+////        tree.insert(14, "");
+////        tree.insert(101, "");
+////        tree.insert(202, "");
+////        tree.delete(13);
+////        tree.delete(12);
+////        tree.insert(-5, "");
+////        tree.delete(14);
+////        tree.insert(1000, "");
+////        tree.delete(202);
+////        tree.delete(9);
+////        tree.insert(22, "");
+////        tree.delete(7);
+////        tree.delete(6);
+////        tree.insert(21, "");
+////        tree.delete(101);
+////        tree.delete(4);
+////System.out.println("root height is "+tree.getRoot().getHeight());
+////System.out.println(tree.getRoot().getKey());
+////System.out.println(tree.getRoot().getRight().getLeft().getLeft().getHeight());
+//// System.out.println(tree.search(5));
+////System.out.println(Arrays.toString(tree.keysToArray()));34, "");
+
+
+    //        AVLTree tree = new AVLTree();
+//        tree.insert(34, "");
+//        tree.insert(52, "");
+//        tree.insert(21, "");
+//        tree.insert(72, "");
+//        PrintBST.print(tree.getRoot());
+//        AVLTree tree2 = new AVLTree();
+//        AVLTree tree3 = new AVLTree();
+//        AVLTree tree4 = new AVLTree();
+//        AVLTree tree5 = new AVLTree();
+//        tree5.insert(9, "");
+//
+//
+//        IAVLNode x = new AVLNode(20,"");
+//        PrintBST.print(tree.getRoot());
+//        tree.join(x, tree2);
+//        PrintBST.print(tree.getRoot());
+//        IAVLNode y = new AVLNode(18,"");
+//        tree3.join(y, tree);
+//        PrintBST.print(tree.getRoot());
+//        IAVLNode z = new AVLNode(100,"");
+//        tree4.join(z, tree);
+//        PrintBST.print(tree.getRoot());
+//        IAVLNode z2 = new AVLNode(10,"");
+//        tree5.join(z2, tree);
+//        PrintBST.print(tree5.getRoot());
+//
+//        AVLTree tree6 = new AVLTree();
+//        AVLTree tree7 = new AVLTree();
+//        IAVLNode z4 = new AVLNode(10,"");
+//        tree6.join(z4, tree7);
+//        PrintBST.print(tree7.getRoot());
+//
+//
+//    AVLTree tree55 = new AVLTree();
+//        tree55.insert(113, "");
+//        tree55.insert(101, "");
+//        tree55.insert(120, "");
+//        tree55.insert(167, "");
+//    AVLTree tree66 = new AVLTree();
+//        tree66.insert(180, "");
+//    IAVLNode node = new AVLNode(173,"");
+//        PrintBST.print(tree55.getRoot());
+//        System.out.println(tree55.getRoot().getKey());
+//        System.out.println(tree55.getMin().getKey());
+//        System.out.println(tree55.getMax().getKey());
+//        tree55.join(node, tree66);
+//        PrintBST.print(tree55.getRoot());
+//        System.out.println(tree55.getRoot().getKey());
+//        System.out.println(tree55.getMin().getKey());
+//        System.out.println(tree55.getMax().getKey());
+//    AVLTree[] trees = tree55.split(167);
+//        PrintBST.print(trees[0].getRoot());
+//        System.out.println(trees[0].getMin().getKey());
+//        System.out.println(trees[0].getMax().getKey());
+//        PrintBST.print(trees[1].getRoot());
+//        System.out.println(trees[1].getMin().getKey());
+//        System.out.println(trees[1].getMax().getKey());
+
 }

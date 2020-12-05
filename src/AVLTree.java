@@ -23,7 +23,7 @@ public class AVLTree {
 	/**
 	 * public boolean empty()
 	 * <p>
-	 * returns true if and only if the tree is empty
+	 * returns true irf and only if the tree is empty
 	 */
 	public boolean empty() {
 		return root == null;
@@ -462,6 +462,7 @@ public class AVLTree {
 		res[0] = smaller;
 		res[1] = bigger;
 		IAVLNode node = node_x.getParent();
+		node_x.abandonThisChild();
 		node_x.nullify();
 		IAVLNode tmp;
 		while (node != null) {
@@ -528,6 +529,8 @@ public class AVLTree {
 			else {
 				joinEmpty(t,x);
 				this.setRoot(t.getRoot());
+				this.setMax(t.getMax());
+				this.setMin(t.getMin());
 			}
 			if (x.getKey() < this.getRoot().getKey())
 				this.setMin(x);
@@ -761,7 +764,6 @@ public class AVLTree {
    }
 
 	   public void nullify(){
-	   	   this.abandonThisChild();
 		   this.setParent(null);
 		   this.setRight(null);
 		   this.setLeft(null);
@@ -776,6 +778,9 @@ public class AVLTree {
 		   }
 	   }
 
+	   public String toString(){
+	   	  return ""+this.getKey();
+		}
    }
 
 

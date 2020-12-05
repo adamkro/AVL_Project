@@ -4,14 +4,14 @@ import java.util.Random;
 import java.util.Set;
 
 public class Testing {
-    private static int RAND_LIM = 100;
-        private static final Random rd = new Random();
+    private static final Random rd = new Random();
 
     public static int calHeight(IAVLNode node){
         if (!node.isRealNode())
             return -1;
         return 1 + Math.max(calHeight(node.getLeft()),calHeight(node.getRight()));
     }
+
     public static boolean CorrectHeights(IAVLNode node){
         if (!node.isRealNode())
             return true;
@@ -37,16 +37,37 @@ public class Testing {
                 isBST(node.getLeft()));
     }
 
-    public static void testJoinSplit(int numOfJoins, boolean show){
-        AVLTree t1 = genRandTree(rd.nextInt(20), 0, 100);
-        AVLTree t2 = genRandTree(rd.nextInt(20), 101, 200);
-        //PrintBST.print(t1.getRoot());
-        //PrintBST.print(t2.getRoot());
+    public static boolean minMaxTest(AVLTree t){
+        if (t.empty())
+            return (t.getMin() == null && t.getMax() == null);
+        IAVLNode min = t.getRoot();
+        while (min.getLeft().isRealNode())
+            min = min.getLeft();
+        IAVLNode max = t.getRoot();
+        while (max.getRight().isRealNode())
+            max = max.getRight();
+        return (max == t.getMax() && min == t.getMin());
+    }
+
+    public static void testJoinSplit(int numOfJoins, boolean show, int maxTreeSize){
+        if (maxTreeSize > 100){
+            System.out.println("maxTreeSize should be less than 100");
+            return;
+        }
+        AVLTree t1 = genRandTree(rd.nextInt(maxTreeSize/2), 0, 100);
+        AVLTree t2 = genRandTree(rd.nextInt(maxTreeSize/2), 101, 200);
+        if (show) {
+            System.out.println("first join trees: (can be empty)");
+            PrintBST.print(t1.getRoot());
+            PrintBST.print(t2.getRoot());
+        }
         t1.join(new AVLNode(100, ""), t2);
         int total_size = t1.size();
         testTree(t1);
-        //System.out.println("first join:");
-        //PrintBST.print(t1.getRoot());
+        if (show) {
+            System.out.println("join with x=100:");
+            PrintBST.print(t1.getRoot());
+        }
         int[] inorder = t1.keysToArray();
         for (int i = 0; i < Math.min(numOfJoins, total_size); i++) {
             int keyRemoved = inorder[rd.nextInt(inorder.length)];
@@ -71,11 +92,59 @@ public class Testing {
         }
     }
 
+    public static boolean inorderTest(AVLTree tree){
+        int[] lst = tree.keysToArray();
+        int[] copiedArray = lst.clone();
+        Arrays.sort(lst);
+        return Arrays.equals(lst, copiedArray);
+    }
+
+    public static boolean sizeTest(IAVLNode node){
+        if (node == null || !node.isRealNode()) return true;
+        return (nodeSizeTest(node) && sizeTest(node.getLeft()) && sizeTest(node.getRight()));
+    }
+
+    public static boolean nodeSizeTest(IAVLNode node){
+        if (!node.isRealNode()) return true;
+        return (node.getSize() == sizeEval(node));
+    }
+    public static int sizeEval(IAVLNode node){
+        if (!node.isRealNode()) return 0;
+        int left = sizeEval(node.getLeft());
+        int right = sizeEval(node.getRight());
+        return ( left + right + 1);
+    }
+    public static AVLTree genRandTree(int size, int min,int max){ //genRandTree with range
+        int num;
+        Set<Integer> hs= new HashSet<Integer>();
+        AVLTree t = new AVLTree();
+        while(size > 0) {
+            num = rd.nextInt(max-min)+min;
+            if (hs.contains(num))
+                continue;
+            hs.add(num);
+            t.insert(num, "");
+            size--;
+        }
+        return t;
+    }
+
+    public static void popRandomNodes(AVLTree tree, int count){
+        int[] inorder = tree.keysToArray();
+        int j;
+        for (int i = 0; i < count; i++) {
+            j = rd.nextInt(inorder.length);
+            tree.delete(inorder[j]);
+        }
+    }
+
     public static void alert(AVLTree t, String testName){
-        System.out.println("*****************************************************************************");
+        System.out.println("*****************************************************************************************");
         System.out.println("Tree failed "+ testName);
         System.out.println(Arrays.toString(t.keysToArray()));
+        System.out.println("min: " + t.getMin() + ", max: " + t.getMax());
         PrintBST.print(t.getRoot());
+        System.out.println("*****************************************************************************************");
     }
 
     public static void testTree(AVLTree t){
@@ -94,46 +163,12 @@ public class Testing {
                 alert(t, "inorder test");
             }
             if(!sizeTest(t.getRoot())){
-                alert(t, "Size test");
+                alert(t, "size test");
+            }
+            if(!minMaxTest(t)){
+                alert(t, "min/max test");
             }
         }
-        //System.out.println("tree test success");
-    }
-    public static boolean inorderTest(AVLTree tree){
-        int[] lst = tree.keysToArray();
-        int[] copiedArray = lst.clone();
-        Arrays.sort(lst);
-        return Arrays.equals(lst, copiedArray);
-    }
-
-    public static boolean sizeTest(IAVLNode node){
-        if (node == null || !node.isRealNode()) return true;
-        return (nodeSizeTest(node) && sizeTest(node.getLeft()) && sizeTest(node.getRight()));
-    }
-    public static boolean nodeSizeTest(IAVLNode node){
-        if (!node.isRealNode()) return true;
-        return (node.getSize() == sizeEval(node));
-    }
-    public static int sizeEval(IAVLNode node){
-        if (!node.isRealNode()) return 0;
-        int left = sizeEval(node.getLeft());
-        int right = sizeEval(node.getRight());
-        return ( left + right + 1);
-    }
-
-    public static AVLTree genRandTree(int size, int min,int max){ //genRandTree with range
-        int num;
-        Set<Integer> hs= new HashSet<Integer>();
-        AVLTree t = new AVLTree();
-        while(size > 0) {
-            num = rd.nextInt(max-min)+min;
-            if (hs.contains(num))
-                continue;
-            hs.add(num);
-            t.insert(num, "");
-            size--;
-        }
-        return t;
     }
 
 
@@ -155,20 +190,25 @@ public class Testing {
         int B2 = 220; //insert value between 200 to 300
         int B3 = 300; //insert value between 200 to 300
         int B4 = 200; //insert value between 200 to 300
-        //
+        // insert, delete, search special cases
         tree.insert(A1, "");
         int value = tree.insert(A1, "");
-        // should return true
-        System.out.println ("try to insert node that already there, should return -1: "+ (value == -1));
+        if (value != -1)
+            System.out.println("insert should return -1");
         tree.delete(A1);
         tree.insert(A2, "");
         value =  tree.delete(A1);
-        System.out.println ("try to delete node that not there, should return -1: "+ (value == -1));
+        if (value != -1)
+            System.out.println("delete should return -1");
         tree.delete(A2);
-        System.out.println("the min is null: "+(tree.getMin() == null));
-        System.out.println("the max is null: "+(tree.getMax() == null));
+        if (tree.getMin()!= null)
+            System.out.println("min should be null");
+        if (tree.getMax()!= null)
+            System.out.println("max should be null");
         tree.insert(A2, "");
-        System.out.println("serach node that dont exist return -1: "+ (tree.search(10) == null));       //
+        if (tree.search(10) != null)
+            System.out.println("search should return null");
+
         // building trees, and delete
         tree.insert(A1, "");
         tree.insert(A2, "");
@@ -189,175 +229,68 @@ public class Testing {
         tree2.insert(B2, "");
         tree2.insert(B3, "");
         tree2.insert(B4, "");
-        System.out.println("*******************");
-        System.out.println("--if there is a problem below - will rise error:--");
-        System.out.println("chack if tree 1 is a tree - done");
         testTree(tree);
-        System.out.println("chack if tree 2 is a tree - done");
         testTree(tree2);
+
+        // split special cases
         IAVLNode x = new AVLNode(150,"");
         tree.join(x,tree2);
-        System.out.println("chack if still tree after join - done");
         testTree(tree);
-        AVLTree[] array = tree.split(tree.getMin().getKey()); //change to max or min
-        System.out.println("chack if split 0 still tree after split by min/max - done");
+        AVLTree[] array = tree.split(tree.getMax().getKey());
         testTree(array[0]);
-        System.out.println("chack if split 1 tree after split by min/max - done ");
         testTree(array[1]);
-    }
+        AVLTree[] arr = array[0].split(array[0].getMin().getKey());
+        testTree(arr[0]);
+        testTree(arr[1]);
 
-    public static void popRandomNodes(AVLTree tree, int count){
-        int[] inorder = tree.keysToArray();
-        int j;
-        for (int i = 0; i < count; i++) {
-            j = rd.nextInt(inorder.length);
-            tree.delete(inorder[j]);
+        // join special cases
+        AVLTree t1 = new AVLTree();
+        AVLTree t2 = new AVLTree();
+        t1.join(new AVLNode(3,""),t2); // join 2 empty trees
+        if (t1.size() != 1 || t1.getRoot().getKey() != 3 || t1.empty()){
+            System.out.println("error joining 2 empty trees");
+        }
+        AVLTree t3 = new AVLTree();
+        t3.insert(5,"");
+        AVLTree t4 = new AVLTree();
+        t3.join(new AVLNode(3,""),t4); // join 1 empty tree (other)
+        if (t3.size() != 2 || t3.empty()){
+            System.out.println("error joining 1 empty tree");
+        }
+        AVLTree t5 = new AVLTree();
+        t5.insert(5,"");
+        AVLTree t6 = new AVLTree();
+        t6.join(new AVLNode(3,""),t5); // join 1 empty tree (this)
+        if (t3.size() != 2 || t3.empty()){
+            System.out.println("error joining 1 empty tree");
         }
     }
+    static void SplitAndJoinTest(int SPLIT_JOIN_TESTS_AMOUNT, boolean showSteps, int MAX_TREE_SIZE){
+        for (int i = 0; i < SPLIT_JOIN_TESTS_AMOUNT; i++) {
+            testJoinSplit(rd.nextInt(20), showSteps, MAX_TREE_SIZE);
+        }
 
+    }
+    static void generalTest(int TESTS_AMOUNT){
+        for (int i = 0; i < TESTS_AMOUNT; i++) {
+            int TREE_SIZE = rd.nextInt(20) + 2;
+            int POP_AMOUNT = rd.nextInt(TREE_SIZE);
+            AVLTree tree = genRandTree(TREE_SIZE, 0 ,30);
+            popRandomNodes(tree,POP_AMOUNT);
+            testTree(tree);
+        }
+    }
 
     public static void main(String[] args){
-          manualCheck();
-//        int TESTS_AMOUNT = 1;
-//        for (int i = 0; i < TESTS_AMOUNT; i++) {
-//            int TREE_SIZE = rd.nextInt(10) + 2;
-//            int POP_AMOUNT = rd.nextInt(TREE_SIZE);
-//            AVLTree tree = genRandTree(TREE_SIZE, 10 ,20);
-//            popRandomNodes(tree,POP_AMOUNT);
-//            testTree(tree);
-//            PrintBST.print(tree.getRoot());
-//            TREE_SIZE = rd.nextInt(7) +1;
-//            POP_AMOUNT = rd.nextInt(TREE_SIZE);
-//            AVLTree tree2 = genRandTree(TREE_SIZE, 0 ,9);
-//            popRandomNodes(tree2,POP_AMOUNT);
-//            testTree(tree2);
-//            PrintBST.print(tree2.getRoot());
-//            //tree.join(,tree2)
-//        }
-        for (int i = 0; i < 1000; i++) {
-            testJoinSplit(rd.nextInt(20), false);
-        }
-        //akdk
+        manualCheck(); // manual special cases
+        int TESTS_AMOUNT = 5; //start low, then increase
+        generalTest(TESTS_AMOUNT);
 
-//        //different sizes tests
-//        for (int j = 0; j < 30; j++) {
-//            for (int i = 0; i < 500; i++) {
-//                AVLTree t = genRandTree(j, 0, 100);
-//                //PrintBST.print(t.getRoot());
-//                if(!sizeTest(t.getRoot())){
-//                    alert(t, "Root size test");
-//                }
-//            }
-//        }
-//        AVLTree tree = new AVLTree();
-//        tree.insert(34, "");
-//        tree.insert(52, "");
-//        tree.insert(21, "");
-//        tree.insert(72, "");
-//        PrintBST.print(tree.getRoot());
-//        AVLTree tree2 = new AVLTree();
-//        AVLTree tree3 = new AVLTree();
-//        AVLTree tree4 = new AVLTree();
-//        AVLTree tree5 = new AVLTree();
-//        tree5.insert(9, "");
-//
-//
-//        IAVLNode x = new AVLNode(20,"");
-//        PrintBST.print(tree.getRoot());
-//        tree.join(x, tree2);
-//        PrintBST.print(tree.getRoot());
-//        IAVLNode y = new AVLNode(18,"");
-//        tree3.join(y, tree);
-//        PrintBST.print(tree.getRoot());
-//        IAVLNode z = new AVLNode(100,"");
-//        tree4.join(z, tree);
-//        PrintBST.print(tree.getRoot());
-//        IAVLNode z2 = new AVLNode(10,"");
-//        tree5.join(z2, tree);
-//        PrintBST.print(tree5.getRoot());
-//
-//        AVLTree tree6 = new AVLTree();
-//        AVLTree tree7 = new AVLTree();
-//        IAVLNode z4 = new AVLNode(10,"");
-//        tree6.join(z4, tree7);
-//        PrintBST.print(tree7.getRoot());
-//
-        AVLTree tree55 = new AVLTree();
-        tree55.insert(113, "");
-        tree55.insert(101, "");
-        tree55.insert(120, "");
-        tree55.insert(167, "");
-        AVLTree tree66 = new AVLTree();
-        tree66.insert(180, "");
-        IAVLNode node = new AVLNode(173,"");
-        PrintBST.print(tree55.getRoot());
-        System.out.println(tree55.getRoot().getKey());
-        System.out.println(tree55.getMin().getKey());
-        System.out.println(tree55.getMax().getKey());
-        tree55.join(node, tree66);
-        PrintBST.print(tree55.getRoot());
-        System.out.println(tree55.getRoot().getKey());
-        System.out.println(tree55.getMin().getKey());
-        System.out.println(tree55.getMax().getKey());
-        AVLTree[] trees = tree55.split(167);
-        PrintBST.print(trees[0].getRoot());
-        System.out.println(trees[0].getMin().getKey());
-        System.out.println(trees[0].getMax().getKey());
-        PrintBST.print(trees[1].getRoot());
-        System.out.println(trees[1].getMin().getKey());
-        System.out.println(trees[1].getMax().getKey());
+        int SPLIT_JOIN_TESTS_AMOUNT = 8; // start low, then increase
+        boolean showSteps = false; // prints steps. false for clean output
+        int MAX_TREE_SIZE = 8; // start small, then increase
+        SplitAndJoinTest(SPLIT_JOIN_TESTS_AMOUNT, showSteps, MAX_TREE_SIZE);
 
         System.out.println("done!");
     }
 }
-
-//        AVLTree tree = new AVLTree();
-//        tree.insert(34, "");
-//        tree.insert(30, "");
-//        tree.insert(21, "");
-//        tree.insert(72, "");
-//        tree.insert(66, "");
-//        tree.insert(98, "");
-//        tree.insert(50, "");
-//        tree.insert(83, "");
-//        tree.delete(72);
-//        PrintBST.print(tree.getRoot());
-//        tree.delete(21);
-//        PrintBST.print(tree.getRoot());
-//        tree.delete(72);
-//        PrintBST.print(tree.getRoot());
-
-
-//tree.insert(1, "");
-//        tree.insert(9, "");
-//        tree.insert(5, "");
-//        tree.insert(10, "");
-//        tree.insert(2, "");
-//        tree.insert(7, "");
-//        tree.insert(4, "");
-//        tree.insert(3, "");
-//        tree.insert(6, "");
-//        tree.insert(11, "");
-//        tree.insert(12, "");
-//        tree.insert(13, "");
-//        tree.insert(14, "");
-//        tree.insert(101, "");
-//        tree.insert(202, "");
-//        tree.delete(13);
-//        tree.delete(12);
-//        tree.insert(-5, "");
-//        tree.delete(14);
-//        tree.insert(1000, "");
-//        tree.delete(202);
-//        tree.delete(9);
-//        tree.insert(22, "");
-//        tree.delete(7);
-//        tree.delete(6);
-//        tree.insert(21, "");
-//        tree.delete(101);
-//        tree.delete(4);
-//System.out.println("root height is "+tree.getRoot().getHeight());
-//System.out.println(tree.getRoot().getKey());
-//System.out.println(tree.getRoot().getRight().getLeft().getLeft().getHeight());
-// System.out.println(tree.search(5));
-//System.out.println(Arrays.toString(tree.keysToArray()));
