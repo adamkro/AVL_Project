@@ -441,7 +441,8 @@ public class AVLTree {
 
 	private void setRoot(IAVLNode newRoot) {
 		this.root = newRoot;
-		newRoot.setParent(null);
+		if (newRoot != null)
+			newRoot.setParent(null);
 	}
 
 	/**

@@ -137,6 +137,75 @@ public class Testing {
     }
 
 
+    public static void manualCheck (){
+        AVLTree tree = new AVLTree();
+        AVLTree tree2 = new AVLTree();
+        // first tree keys
+        int A1 = 10; //insert value between 1 to 100
+        int A2 = 12; //insert value between 1 to 100
+        int A3 = 15; //insert value between 1 to 100
+        int A4 = 100; //insert value between 1 to 100
+        int A5 = 99; //insert value between 1 to 100
+        int A6 = 70; //insert value between 1 to 100
+        int A7 = 82; //insert value between 1 to 100
+        int A8 = 3; //insert value between 1 to 100
+        int A9 = 4; //insert value between 1 to 100
+        // second tree keys
+        int B1 = 210; //insert value between 200 to 300
+        int B2 = 220; //insert value between 200 to 300
+        int B3 = 300; //insert value between 200 to 300
+        int B4 = 200; //insert value between 200 to 300
+        //
+        tree.insert(A1, "");
+        int value = tree.insert(A1, "");
+        // should return true
+        System.out.println ("try to insert node that already there, should return -1: "+ (value == -1));
+        tree.delete(A1);
+        tree.insert(A2, "");
+        value =  tree.delete(A1);
+        System.out.println ("try to delete node that not there, should return -1: "+ (value == -1));
+        tree.delete(A2);
+        System.out.println("the min is null: "+(tree.getMin() == null));
+        System.out.println("the max is null: "+(tree.getMax() == null));
+        tree.insert(A2, "");
+        System.out.println("serach node that dont exist return -1: "+ (tree.search(10) == null));       //
+        // building trees, and delete
+        tree.insert(A1, "");
+        tree.insert(A2, "");
+        tree.insert(A3, "");
+        tree.insert(A4, "");
+        tree.insert(A5, "");
+        tree.delete(A2);
+        tree.insert(A6, "");
+        tree.insert(A7, "");
+        tree.delete(A5);
+        tree.insert(A8, "");
+        tree.delete(A6);
+        tree.insert(A9, "");
+        tree.insert(A6, "");
+        tree.insert(A2, "");
+        tree.insert(A5, "");
+        tree2.insert(B1, "");
+        tree2.insert(B2, "");
+        tree2.insert(B3, "");
+        tree2.insert(B4, "");
+        System.out.println("*******************");
+        System.out.println("--if there is a problem below - will rise error:--");
+        System.out.println("chack if tree 1 is a tree - done");
+        testTree(tree);
+        System.out.println("chack if tree 2 is a tree - done");
+        testTree(tree2);
+        IAVLNode x = new AVLNode(150,"");
+        tree.join(x,tree2);
+        System.out.println("chack if still tree after join - done");
+        testTree(tree);
+        AVLTree[] array = tree.split(tree.getMin().getKey()); //change to max or min
+        System.out.println("chack if split 0 still tree after split by min/max - done");
+        testTree(array[0]);
+        System.out.println("chack if split 1 tree after split by min/max - done ");
+        testTree(array[1]);
+    }
+
     public static void popRandomNodes(AVLTree tree, int count){
         int[] inorder = tree.keysToArray();
         int j;
@@ -146,7 +215,9 @@ public class Testing {
         }
     }
 
+
     public static void main(String[] args){
+          manualCheck();
 //        int TESTS_AMOUNT = 1;
 //        for (int i = 0; i < TESTS_AMOUNT; i++) {
 //            int TREE_SIZE = rd.nextInt(10) + 2;
