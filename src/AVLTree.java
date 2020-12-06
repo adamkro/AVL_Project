@@ -242,10 +242,10 @@ public class AVLTree {
 	 * complexity - O(log n)
 	 */
 	public int delete(int k) {
-		if (search(k) == null)
-			return -1;
-
 		IAVLNode node = searchNode(k);
+		if (node == null) {
+			return -1;
+		}
 		IAVLNode nodeToBalance;
 		if (node.getHeight() == 0)  // node is leaf
 			nodeToBalance = simpleDelete(node);
