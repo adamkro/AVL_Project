@@ -283,12 +283,12 @@ public class Testing {
 
     public static void main(String[] args){
         manualCheck(); // manual special cases
-        int TESTS_AMOUNT = 5; //start low, then increase
+        int TESTS_AMOUNT = 1000; //start low, then increase
         generalTest(TESTS_AMOUNT);
 
-        int SPLIT_JOIN_TESTS_AMOUNT = 8; // start low, then increase
+        int SPLIT_JOIN_TESTS_AMOUNT = 1000; // start low, then increase
         boolean showSteps = false; // prints steps. false for clean output
-        int MAX_TREE_SIZE = 8; // start small, then increase
+        int MAX_TREE_SIZE = 20; // start small, then increase
         SplitAndJoinTest(SPLIT_JOIN_TESTS_AMOUNT, showSteps, MAX_TREE_SIZE);
 
         System.out.println("done!");

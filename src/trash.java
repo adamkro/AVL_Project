@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class trash {
 
     //	public void updateSizeAbove(IAVLNode node, boolean inc){
@@ -165,5 +167,30 @@ public class trash {
 //        PrintBST.print(trees[1].getRoot());
 //        System.out.println(trees[1].getMin().getKey());
 //        System.out.println(trees[1].getMax().getKey());
+
+
+
+//    AVLTree tree = new AVLTree();
+//        System.out.println(Arrays.toString(tree.keysToArray()));
+//        System.out.println(Arrays.toString(tree.infoToArray()));
+//        tree.insert(8, "8");
+//        tree.insert(10, "10");
+//        System.out.println(Arrays.toString(tree.keysToArray()));
+//        System.out.println(Arrays.toString(tree.infoToArray()));
+//        tree.insert(4, "4");
+//        tree.insert(1, "1");
+//        tree.insert(11, "11");
+//        tree.insert(6, "6");
+//        System.out.println(Arrays.toString(tree.keysToArray()));
+//        System.out.println(Arrays.toString(tree.infoToArray()));
+//        tree.insert(3, "3");
+//        tree.insert(5, "5");
+//        tree.insert(7, "7");
+//        System.out.println(Arrays.toString(tree.keysToArray()));
+//        System.out.println(Arrays.toString(tree.infoToArray()));
+//        tree.insert(9, "9");
+//        tree.insert(2, "2");
+//        System.out.println(Arrays.toString(tree.keysToArray()));
+//        System.out.println(Arrays.toString(tree.infoToArray()));
 
 }
