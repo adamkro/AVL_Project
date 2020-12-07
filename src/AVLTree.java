@@ -82,6 +82,8 @@ public class AVLTree {
 			return node.getValue();
 		return null;
 	}
+
+
 	/**
 	 * public void updateSizeAbove(IAVLNode node)
 	 * <p>
