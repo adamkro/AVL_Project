@@ -532,6 +532,8 @@ public class AVLTree {
 	 * complexity - O(1)
 	 */
 	public int size() {
+		if (this.empty())
+				return 0;
 		return this.getRoot().getSize();
 	}
 
@@ -823,7 +825,7 @@ public class AVLTree {
 
 	}
 
-}
+
 	/**
 	   * public interface IAVLNode
 	   * ! Do not delete or modify this - otherwise all tests will fail !
@@ -1039,7 +1041,7 @@ public class AVLTree {
 	   }
    }
 
-
+}
 
   
 
