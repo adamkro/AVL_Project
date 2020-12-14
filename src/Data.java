@@ -89,13 +89,39 @@
 //                swaps++;
 //            }
 //            array[i + 1] = key;
-//            swaps++;
 //        }
 //        return swaps;
 //    }
-//
+//    static int[] makeSwaps(int i, int[] arr){
+//        int[] original = arr.clone();
+//        int swaps = (int) insertionSort(arr.clone());
+//        int a;
+//        int b;
+//        int tmp;
+//        while(swaps != i){
+//            a = rd.nextInt(arr.length);
+//            b = rd.nextInt(arr.length);
+//            tmp = arr[a];
+//            arr[a] = arr[b];
+//            arr[b] = tmp;
+//            swaps = (int) insertionSort(arr.clone());
+//            if (swaps > i)
+//                arr = original.clone();
+//        }
+//        return arr;
+//    }
 //    public static void main(String[] args) {
-//        //question 1
+//        //testing H
+//        for (int i = 1; i < 6; i++) {
+//            int[] randArr = {1,2,3,4,5,6,7,8,9,10,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30};
+//            int[] H = makeSwaps(30, randArr);
+//            //System.out.println(Arrays.toString(H));
+//            int AVLRandArr = insertFromArr(H);
+//            System.out.println("searches: "+AVLRandArr);
+//            long swapsArr = insertionSort(H);
+//            System.out.println("swaps: "+swapsArr);
+//        }
+////        //question 1
 ////        for (int i = 1; i < 11; i++) {
 ////            System.out.println("*****************************");
 ////            System.out.println("test num :" + i);
@@ -110,23 +136,24 @@
 ////            System.out.println("swaps random array: "+swapsArr);
 ////            System.out.println("swaps descending array: "+swapsDescArr);
 ////        }
-//        //question 2
-//        for (int i = 1; i < 11; i++) {
-//            System.out.println("*****************************");
-//            System.out.println("test num :" + i);
-//            int[] randArr = randomArr(10000 * i);
-//            AVLTree t1 = createTreeFromArr(randArr);
-//            AVLTree t2 = createTreeFromArr(randArr);
-//            int randKey = randArr[10];
-//            int maxLeftSubTree = t2.getMaxLeftSubTree();
-//            int[] resRand = t1.splitAndCount(randKey);
-//            int[] resMax = t2.splitAndCount(maxLeftSubTree);
 //
-//            System.out.println("random split avg: "+resRand[0]);
-//            System.out.println("random split max cost: "+resRand[1]);
-//            System.out.println("max split avg: "+resMax[0]);
-//            System.out.println("max split max cost: "+resMax[1]);
-//        }
+////        //question 2
+////        for (int i = 1; i < 11; i++) {
+////            System.out.println("*****************************");
+////            System.out.println("test num :" + i);
+////            int[] randArr = randomArr(10000 * i);
+////            AVLTree t1 = createTreeFromArr(randArr);
+////            AVLTree t2 = createTreeFromArr(randArr);
+////            int randKey = randArr[10];
+////            int maxLeftSubTree = t2.getMaxLeftSubTree();
+////            int[] resRand = t1.splitAndCount(randKey);
+////            int[] resMax = t2.splitAndCount(maxLeftSubTree);
+////
+////            System.out.println("random split avg: "+resRand[0]);
+////            System.out.println("random split max cost: "+resRand[1]);
+////            System.out.println("max split avg: "+resMax[0]);
+////            System.out.println("max split max cost: "+resMax[1]);
+////        }
 //
 //    }
 //}

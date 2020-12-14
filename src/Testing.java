@@ -1,10 +1,10 @@
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
-
-public class Testing {
-    private static final Random rd = new Random();
+//import java.util.Arrays;
+//import java.util.HashSet;
+//import java.util.Random;
+//import java.util.Set;
+//
+//public class Testing {
+//    private static final Random rd = new Random();
 //
 //    public static int calHeight(IAVLNode node){
 //        if (!node.isRealNode())
@@ -280,8 +280,8 @@ public class Testing {
 //            testTree(tree);
 //        }
 //    }
-
-    public static void main(String[] args){
+//
+//    public static void main(String[] args){
 //        manualCheck(); // manual special cases
 //        int TESTS_AMOUNT = 1000; //start low, then increase
 //        generalTest(TESTS_AMOUNT);
@@ -290,5 +290,5 @@ public class Testing {
 //        boolean showSteps = false; // prints steps. false for clean output
 //        int MAX_TREE_SIZE = 20; // start small, then increase
 //        SplitAndJoinTest(SPLIT_JOIN_TESTS_AMOUNT, showSteps, MAX_TREE_SIZE);
-    }
-}
+//    }
+//}

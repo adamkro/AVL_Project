@@ -193,4 +193,76 @@ public class trash {
 //        System.out.println(Arrays.toString(tree.keysToArray()));
 //        System.out.println(Arrays.toString(tree.infoToArray()));
 
+//
+//
+//    //**************************************************
+//    //**************************************************
+//    //**************************************************
+//    //**************************************************
+//    //**************************************************
+//    //for measurements
+//    public int[] splitAndCount(int x) {
+//        int count = 0;
+//        int sum = 0;
+//        int max = 0;
+//        int curr = 0;
+//        IAVLNode node_x = searchNode(x);
+//        AVLTree smaller = constructSubTree(node_x.getLeft());
+//        AVLTree bigger = constructSubTree(node_x.getRight());
+//        AVLTree[] res = new AVLTree[2];
+//        res[0] = smaller;
+//        res[1] = bigger;
+//        IAVLNode node = node_x.getParent();
+//        node_x.abandonThisChild();
+//        node_x.nullify();
+//        IAVLNode tmp;
+//        while (node != null) {
+//            tmp = node.getParent();
+//            node.abandonThisChild();
+//            IAVLNode left = node.getLeft();
+//            IAVLNode right = node.getRight();
+//            node.setLeft(new AVLNode());
+//            node.setRight(new AVLNode());
+//            node.setParent(null);
+//            node.update();
+//            if (node.getKey() < x) {
+//                curr = smaller.join(node, constructSubTree(left)); //Make sure join takes care of node's children and parent
+//            } else {
+//                curr = bigger.join(node, constructSubTree(right));
+//            }
+//            sum += curr;
+//            count++;
+//            if (curr > max)
+//                max = curr;
+//            node = tmp;
+//        }
+//        res[0].calculateMin();
+//        res[0].calculateMax();
+//        res[1].calculateMin();
+//        res[1].calculateMax();
+//        int[] ans = new int[2];
+//        ans[0] = sum/count;
+//        ans[1] = max;
+//        return ans;
+//    }
+//
+//
+//    public int getMaxLeftSubTree(){
+//        IAVLNode node = this.getRoot().getLeft();
+//        while(node.getRight().isRealNode())
+//            node = node.getRight();
+//        return node.getKey();
+//    }
+//
+//
+//
+//
+//
+//
+//    //**************************************************
+//    //**************************************************
+//    //**************************************************
+//    //**************************************************
+//    //**************************************************
+
 }
